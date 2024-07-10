@@ -39,8 +39,24 @@ p.box {
     text-align: center;
 }
 
+#chart-container {
+    display: flex;
+}
+
 #chart {
+    flex: 3;
     margin-top: 20px;
+}
+
+#variable-definition {
+    flex: 1;
+    margin-left: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+#variable-definition h3 {
+    text-decoration: underline;
 }
 
 button, select {

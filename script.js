@@ -1,3 +1,9 @@
+// Define metric definitions
+const definitions = {
+    "Eq. 90/10 Ratio": "90% Income Earners divided by 10% Income Earners. The greater the number, the higher the income inequality.",
+    // Add more metrics and their definitions as needed
+};
+
 document.getElementById("begin-button").addEventListener("click", function() {
     // Update header text
     document.getElementById("header-text").innerText = "Here it is";
@@ -27,10 +33,13 @@ document.getElementById("begin-button").addEventListener("click", function() {
         dropdown.on("change", function() {
             const selectedMetric = this.value;
             updateChart(data, selectedMetric);
+            updateDefinition(selectedMetric);
         });
 
         // Initial chart rendering
-        updateChart(data, metrics[0]);
+        const initialMetric = metrics[0];
+        updateChart(data, initialMetric);
+        updateDefinition(initialMetric);
     });
 });
 
@@ -45,8 +54,9 @@ document.getElementById("back-button").addEventListener("click", function() {
     document.getElementById("back-button").style.display = "none";
     document.getElementById("metric-dropdown").style.display = "none";
     
-    // Clear the chart
+    // Clear the chart and definition
     d3.select("#chart").html("");
+    document.getElementById("definition").innerText = "";
 });
 
 function updateChart(data, metric) {
@@ -109,4 +119,9 @@ function updateChart(data, metric) {
             .x(d => x(d.year))
             .y(d => y(d.value))
         );
+}
+
+function updateDefinition(metric) {
+    // Display metric definition
+    document.getElementById("definition").innerText = definitions[metric] || "No definition available.";
 }
