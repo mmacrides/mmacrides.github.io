@@ -41,21 +41,21 @@ p.box {
 
 #chart-container {
     display: flex;
+    flex-direction: column; /* Ensure elements stack vertically */
 }
 
 #chart {
     flex: 3;
-    margin-top: 20px;
+    margin-bottom: 20px; /* Add margin to separate from the chart details container */
 }
 
-#variable-definition {
-    flex: 1;
-    margin-left: 20px;
+#chart-definition {
+    display: none; /* Initially hide the chart details container */
     padding: 10px;
     border: 1px solid #ccc;
 }
 
-#variable-definition h3 {
+#chart-definition h3 {
     text-decoration: underline;
 }
 

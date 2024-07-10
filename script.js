@@ -1,13 +1,14 @@
 document.getElementById("begin-button").addEventListener("click", function() {
-    // Update header text
+    // Update header text and show relevant elements
     document.getElementById("header-text").innerText = "Income Distributions over the Years";
-    
-    // Hide intro text, begin button, and h2, show back button and dropdown
     document.getElementById("intro-text").style.display = "none";
     document.getElementById("begin-button").style.display = "none";
     document.getElementById("header-text2").style.display = "none";
     document.getElementById("back-button").style.display = "block";
     document.getElementById("metric-dropdown").style.display = "block";
+    // Show the chart and chart details
+    document.getElementById("chart-container").style.display = "flex";
+    document.getElementById("chart-definition").style.display = "block";
     
     // Load and process data
     d3.csv("personal_income_formatted.csv").then(data => {
@@ -36,18 +37,16 @@ document.getElementById("begin-button").addEventListener("click", function() {
 });
 
 document.getElementById("back-button").addEventListener("click", function() {
-    // Update header text
+    // Update header text and show intro elements
     document.getElementById("header-text").innerText = "Welcome to My Interactive Data Visualization";
-    
-    // Show intro text, begin button, and h2, hide back button and dropdown
     document.getElementById("intro-text").style.display = "block";
     document.getElementById("begin-button").style.display = "block";
     document.getElementById("header-text2").style.display = "block";
     document.getElementById("back-button").style.display = "none";
     document.getElementById("metric-dropdown").style.display = "none";
-    
-    // Clear the chart
-    d3.select("#chart").html("");
+    // Hide the chart and chart details
+    document.getElementById("chart-container").style.display = "none";
+    document.getElementById("chart-definition").style.display = "none";
 });
 
 function updateChart(data, metric) {
