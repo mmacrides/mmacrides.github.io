@@ -1,6 +1,6 @@
 // Define metric definitions
 const definitions = {
-    "Eq. 90/10 Ratio": "90% Income Earners divided by 10% Income Earners. The greater the number, the higher the income inequality.",
+    "Eq. 90/10 ratio": "90% Income Earners divided by 10% Income Earners. The greater the number, the higher the income inequality.",
     // Add more metrics and their definitions as needed
 };
 
