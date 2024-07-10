@@ -11,17 +11,23 @@
         <h1 id="header-text">Welcome to My Interactive Data Visualization</h1>
         <h2 id="header-text2">by Matt Macrides</h2>
         <p id="intro-text" class="box">This site provides a drill down story of personal income inequality distributions from 2012 - 2022. We start by looking at the United States as a whole, then we drill down into a United States cloropleth to show metric differences across States and then drill down into state specific metrics over the years. I used the Bureau of Economic Analysis (BEA) as my data source for the project: <a href="https://www.bea.gov/data/special-topics/distribution-of-personal-income" target="_blank">https://www.bea.gov/data/special-topics/distribution-of-personal-income</a>.</p>
+        
+        <!-- Chart Container -->
         <div id="chart-container">
             <div id="chart"></div>
             <div id="variable-definition">
-                <h3>Variable Definition</h3>
-                <p id="definition"></p>
+                <h3>Chart Details</h3>
+                <p>Provide chart details here.</p>
             </div>
         </div>
+
+        <!-- Buttons and Dropdown -->
         <button id="begin-button">Begin</button>
         <button id="back-button" style="display: none;">Back</button>
         <select id="metric-dropdown" style="display: none;"></select>
     </div>
+
+    <!-- JavaScript Libraries -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="script.js"></script>
 </body>

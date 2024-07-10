@@ -1,12 +1,6 @@
-// Define metric definitions
-const definitions = {
-    "Eq. 90/10 ratio": "90% Income Earners divided by 10% Income Earners. The greater the number, the higher the income inequality.",
-    // Add more metrics and their definitions as needed
-};
-
 document.getElementById("begin-button").addEventListener("click", function() {
     // Update header text
-    document.getElementById("header-text").innerText = "Here it is";
+    document.getElementById("header-text").innerText = "Income Distributions over the Years";
     
     // Hide intro text, begin button, and h2, show back button and dropdown
     document.getElementById("intro-text").style.display = "none";
@@ -17,13 +11,14 @@ document.getElementById("begin-button").addEventListener("click", function() {
     
     // Load and process data
     d3.csv("personal_income_formatted.csv").then(data => {
-        // Filter out blank metrics
+        // Filter out blank metrics and remove specific metrics
         const metrics = [...new Set(data.map(d => d.Metric).filter(d => d))];
-        
+        const filteredMetrics = metrics.filter(metric => !(metric.includes("Median") || metric.includes("Mean")));
+
         // Populate dropdown
         const dropdown = d3.select("#metric-dropdown");
         dropdown.selectAll("option")
-            .data(metrics)
+            .data(filteredMetrics)
             .enter()
             .append("option")
             .attr("value", d => d)
@@ -33,13 +28,10 @@ document.getElementById("begin-button").addEventListener("click", function() {
         dropdown.on("change", function() {
             const selectedMetric = this.value;
             updateChart(data, selectedMetric);
-            updateDefinition(selectedMetric);
         });
 
         // Initial chart rendering
-        const initialMetric = metrics[0];
-        updateChart(data, initialMetric);
-        updateDefinition(initialMetric);
+        updateChart(data, filteredMetrics[0]);
     });
 });
 
@@ -54,9 +46,8 @@ document.getElementById("back-button").addEventListener("click", function() {
     document.getElementById("back-button").style.display = "none";
     document.getElementById("metric-dropdown").style.display = "none";
     
-    // Clear the chart and definition
+    // Clear the chart
     d3.select("#chart").html("");
-    document.getElementById("definition").innerText = "";
 });
 
 function updateChart(data, metric) {
@@ -119,9 +110,4 @@ function updateChart(data, metric) {
             .x(d => x(d.year))
             .y(d => y(d.value))
         );
-}
-
-function updateDefinition(metric) {
-    // Display metric definition
-    document.getElementById("definition").innerText = definitions[metric] || "No definition available.";
 }
