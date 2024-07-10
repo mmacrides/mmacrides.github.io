@@ -43,13 +43,13 @@ document.getElementById("back-button").addEventListener("click", function() {
     document.getElementById("back-button").style.display = "none";
     document.getElementById("metric-dropdown").style.display = "none";
     
-    // Remove the current SVG to reset the chart
-    d3.select("#chart").select("svg").remove();
+    // Clear the chart
+    d3.select("#chart").html("");
 });
 
 function updateChart(data, metric) {
-    // Remove any existing SVG
-    d3.select("#chart").select("svg").remove();
+    // Clear the current SVG
+    d3.select("#chart").html("");
 
     // Filter data by selected metric
     const filteredData = data.filter(d => d.Metric === metric);
