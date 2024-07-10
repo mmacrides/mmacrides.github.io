@@ -9,7 +9,7 @@ document.getElementById("begin-button").addEventListener("click", function() {
     document.getElementById("metric-dropdown").style.display = "block";
     
     // Load and process data
-    d3.csv("personal_income.csv").then(data => {
+    d3.csv("personal_income_formatted.csv").then(data => {
         // Filter out blank metrics
         const metrics = [...new Set(data.map(d => d.Metric).filter(d => d))];
         
