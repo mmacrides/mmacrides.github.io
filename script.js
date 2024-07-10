@@ -2,9 +2,10 @@ document.getElementById("begin-button").addEventListener("click", function() {
     // Update header text
     document.getElementById("header-text").innerText = "Here it is";
     
-    // Hide intro text and begin button, show back button and dropdown
+    // Hide intro text, begin button, and h2, show back button and dropdown
     document.getElementById("intro-text").style.display = "none";
     document.getElementById("begin-button").style.display = "none";
+    document.getElementById("header-text2").style.display = "none";
     document.getElementById("back-button").style.display = "block";
     document.getElementById("metric-dropdown").style.display = "block";
     
@@ -37,9 +38,10 @@ document.getElementById("back-button").addEventListener("click", function() {
     // Update header text
     document.getElementById("header-text").innerText = "Welcome to My Interactive Data Visualization";
     
-    // Show intro text and begin button, hide back button and dropdown
+    // Show intro text, begin button, and h2, hide back button and dropdown
     document.getElementById("intro-text").style.display = "block";
     document.getElementById("begin-button").style.display = "block";
+    document.getElementById("header-text2").style.display = "block";
     document.getElementById("back-button").style.display = "none";
     document.getElementById("metric-dropdown").style.display = "none";
     
