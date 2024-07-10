@@ -10,8 +10,8 @@ document.getElementById("begin-button").addEventListener("click", function() {
     
     // Load and process data
     d3.csv("personal_income.csv").then(data => {
-        // Process data
-        const metrics = [...new Set(data.map(d => d.Metric))];
+        // Filter out blank metrics
+        const metrics = [...new Set(data.map(d => d.Metric).filter(d => d))];
         
         // Populate dropdown
         const dropdown = d3.select("#metric-dropdown");
@@ -54,8 +54,14 @@ function updateChart(data, metric) {
     // Filter data by selected metric
     const filteredData = data.filter(d => d.Metric === metric);
 
-    // Pivot data
-    const years = d3.keys(filteredData[0]).filter(d => d !== "Metric");
+    // Check if there is data for the selected metric
+    if (filteredData.length === 0) {
+        console.error("No data available for the selected metric.");
+        return;
+    }
+
+    // Pivot data (years are in columns D-N, which are 2012-2022)
+    const years = d3.range(2012, 2023); // Generates [2012, 2013, ..., 2022]
     const pivotData = years.map(year => ({
         year: year,
         value: +filteredData[0][year]
@@ -76,7 +82,7 @@ function updateChart(data, metric) {
 
     // Set up scales
     const x = d3.scaleLinear()
-        .domain(d3.extent(pivotData, d => d.year))
+        .domain([2012, 2022])
         .range([0, width]);
     
     const y = d3.scaleLinear()
