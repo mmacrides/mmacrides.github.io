@@ -175,7 +175,7 @@ function updateChart(data, metric) {
 
         annotation.append("text")
             .attr("x", x(annotationData.year) + 55) // Adjusted based on text box position
-            .attr("y", y(annotationData.value) - 55) // Adjusted based on text box position
+            .attr("y", y(annotationData.value) - 70) // Adjusted based on text box position
             .attr("fill", "purple")
             .style("font-size", "12px")
             .text("Hover over the data points to see the exact values")
