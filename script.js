@@ -169,17 +169,17 @@ function updateChart(data, metric) {
             .attr("y1", y(annotationData.value))
             .attr("x2", x(annotationData.year) + 50) // Adjusted based on text box position
             .attr("y2", y(annotationData.value) - 50) // Adjusted based on text box position
-            .attr("stroke", "black")
+            .attr("stroke", "purple")
             .attr("stroke-width", 1)
             .attr("stroke-dasharray", "4");
 
         annotation.append("text")
             .attr("x", x(annotationData.year) + 55) // Adjusted based on text box position
             .attr("y", y(annotationData.value) - 55) // Adjusted based on text box position
-            .attr("fill", "black")
+            .attr("fill", "purple")
             .style("font-size", "12px")
             .text("Hover over the data points to see the exact values")
-            .call(wrap, 100);
+            .call(wrap, 75);
     }
 }
 
