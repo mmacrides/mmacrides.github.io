@@ -1,6 +1,10 @@
 document.getElementById("begin-button").addEventListener("click", function() {
     // Update header text and show relevant elements
     document.getElementById("header-text").innerText = "Income Distributions over the Years";
+    document.getElementById("header-text").style.border = "1px solid #ddd";
+    document.getElementById("header-text").style.borderRadius = "8px";
+    document.getElementById("header-text").style.padding = "10px";
+    document.getElementById("header-text").style.backgroundColor = "#f5f5f5"; // Optional: Add background color
     document.getElementById("intro-text").style.display = "none";
     document.getElementById("begin-button").style.display = "none";
     document.getElementById("header-text2").style.display = "none";
@@ -39,6 +43,9 @@ document.getElementById("begin-button").addEventListener("click", function() {
 document.getElementById("back-button").addEventListener("click", function() {
     // Update header text and show intro elements
     document.getElementById("header-text").innerText = "Welcome to My Interactive Data Visualization";
+    document.getElementById("header-text").style.border = "none";
+    document.getElementById("header-text").style.padding = "0";
+    document.getElementById("header-text").style.backgroundColor = "transparent"; // Optional: Remove background color
     document.getElementById("intro-text").style.display = "block";
     document.getElementById("begin-button").style.display = "block";
     document.getElementById("header-text2").style.display = "block";
@@ -79,8 +86,6 @@ function updateChart(data, metric) {
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .style("border", "1px solid #ddd") // Add border around the chart
-        .style("border-radius", "8px") // Rounded corners
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -118,43 +123,88 @@ function updateChart(data, metric) {
         .attr("fill", "black")
         .style("text-anchor", "middle")
         .style("font-size", "14px") // Increased font size
-        .text(metric);
+        .text("Value");
 
-    // Add line
-    const line = svg.append("path")
+    // Draw line
+    const line = d3.line()
+        .x(d => x(d.year))
+        .y(d => y(d.value));
+
+    svg.append("path")
         .datum(pivotData)
         .attr("fill", "none")
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 1.5)
-        .attr("d", d3.line()
-            .x(d => x(d.year))
-            .y(d => y(d.value))
-        );
+        .attr("stroke", "#007bff")
+        .attr("stroke-width", 2)
+        .attr("d", line);
 
-    // Add dots
-    const dots = svg.selectAll("dot")
+    // Draw dots
+    svg.selectAll("dot")
         .data(pivotData)
         .enter().append("circle")
         .attr("cx", d => x(d.year))
         .attr("cy", d => y(d.value))
-        .attr("r", 5)
-        .attr("fill", "steelblue");
+        .attr("r", 4)
+        .attr("fill", "#007bff")
+        .on("mouseover", function(event, d) {
+            d3.select(".tooltip")
+                .style("opacity", 1)
+                .html(`${metric}, ${d.year}: ${d.value}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            d3.select(".tooltip")
+                .style("opacity", 0);
+        });
 
-    // Add hover functionality
-    const tooltip = d3.select("body").append("div")
-        .attr("class", "tooltip")
-        .style("opacity", 0);
+    // Draw annotation for the 2014 data point
+    const annotationData = pivotData.find(d => d.year === 2014);
 
-    dots.on("mouseover", function(event, d) {
-        tooltip.transition()
-            .duration(200)
-            .style("opacity", .9);
-        tooltip.html(`${metric}, Year: ${d.year}<br>Value: ${d.value}`)
-            .style("left", (event.pageX + 5) + "px")
-            .style("top", (event.pageY - 28) + "px");
-    }).on("mouseout", function() {
-        tooltip.transition()
-            .duration(500)
-            .style("opacity", 0);
+    if (annotationData) {
+        const annotation = svg.append("g")
+            .attr("class", "annotation-group");
+
+        annotation.append("line")
+            .attr("x1", x(annotationData.year))
+            .attr("y1", y(annotationData.value))
+            .attr("x2", x(annotationData.year) + 50) // Adjusted based on text box position
+            .attr("y2", y(annotationData.value) - 50) // Adjusted based on text box position
+            .attr("stroke", "black")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "4");
+
+        annotation.append("text")
+            .attr("x", x(annotationData.year) + 55) // Adjusted based on text box position
+            .attr("y", y(annotationData.value) - 55) // Adjusted based on text box position
+            .attr("fill", "black")
+            .style("font-size", "12px")
+            .text("Hover over the data points to see the exact values")
+            .call(wrap, 100);
+    }
+}
+
+// Function to wrap text in SVG text element
+function wrap(text, width) {
+    text.each(function() {
+        var text = d3.select(this),
+            words = text.text().split(/\s+/).reverse(),
+            word,
+            line = [],
+            lineNumber = 0,
+            lineHeight = 1.1, // ems
+            y = text.attr("y"),
+            dy = parseFloat(text.attr("dy") || 0),
+            tspan = text.text(null).append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", dy + "em");
+        
+        while (word = words.pop()) {
+            line.push(word);
+            tspan.text(line.join(" "));
+            if (tspan.node().getComputedTextLength() > width) {
+                line.pop();
+                tspan.text(line.join(" "));
+                line = [word];
+                tspan = text.append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+            }
+        }
     });
 }
