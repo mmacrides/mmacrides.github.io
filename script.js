@@ -123,7 +123,7 @@ function updateChart(data, metric) {
         .attr("fill", "black")
         .style("text-anchor", "middle")
         .style("font-size", "14px") // Increased font size
-        .text("Value");
+        .text(metric);
 
     // Draw line
     const line = d3.line()

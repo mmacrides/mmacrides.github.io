@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Data Visualization</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .tooltip {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 5px;
+            border-radius: 3px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            pointer-events: none;
+            position: absolute;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+    </style>
 </head>
 <body>
     <div id="container">
@@ -25,6 +38,9 @@
         <button id="begin-button">Start</button>
         <button id="back-button" style="display: none;">Back</button>
     </div>
+
+    <!-- Tooltip -->
+    <div class="tooltip"></div>
 
     <!-- JavaScript Libraries -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
