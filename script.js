@@ -90,7 +90,7 @@ function updateChart(data, metric) {
     // Add padding to the Y-axis domain
     const yMin = d3.min(pivotData, d => d.value);
     const yMax = d3.max(pivotData, d => d.value);
-    const yPadding = (yMax - yMin) * 0.2; // 20% padding
+    const yPadding = (yMax - yMin) * 0.3; // 30% padding
     const y = d3.scaleLinear()
         .domain([yMin - yPadding, yMax + yPadding]) // Adjusted to add padding
         .range([height, 0]);
@@ -104,6 +104,7 @@ function updateChart(data, metric) {
         .attr("y", 40) // Positioning below the axis
         .attr("fill", "black")
         .style("text-anchor", "middle")
+        .style("font-size", "14px") // Increased font size
         .text("Year");
 
     svg.append("g")
@@ -114,6 +115,7 @@ function updateChart(data, metric) {
         .attr("y", -50) // Positioning to the left of the axis
         .attr("fill", "black")
         .style("text-anchor", "middle")
+        .style("font-size", "14px") // Increased font size
         .text(metric);
 
     // Add line

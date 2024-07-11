@@ -14,16 +14,16 @@
         
         <!-- Chart Container -->
         <div id="chart-container">
+            <select id="metric-dropdown" style="display: none;"></select>
             <div id="chart"></div>
-            <div id="chart-definition">
+            <div id="chart-definition" class="box">
                 <p>This scene shows the distribution of income metrics in the United States over time. The "Eq. X/Y ratio" compares the income of individuals at the Xth percentile to the income of individuals at the Yth percentile. The larger the value, the more income disparity between groups. The Gini Coefficient is another measure of income inequality. A score of 0 means perfect equality, and a score of 1 means perfect inequality.</p>
             </div>
         </div>
 
-        <!-- Buttons and Dropdown -->
-        <button id="begin-button">Begin</button>
+        <!-- Buttons -->
+        <button id="begin-button">Start</button>
         <button id="back-button" style="display: none;">Back</button>
-        <select id="metric-dropdown" style="display: none;"></select>
     </div>
 
     <!-- JavaScript Libraries -->
