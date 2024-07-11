@@ -72,7 +72,7 @@ function updateChart(data, metric) {
     // Set up dimensions and margins
     const margin = {top: 20, right: 30, bottom: 30, left: 40};
     const width = 800 - margin.left - margin.right;
-    const height = 600 - margin.top - margin.bottom;
+    const height = 400 - margin.top - margin.bottom; // Reduced height
 
     // Create SVG
     const svg = d3.select("#chart")
@@ -88,7 +88,7 @@ function updateChart(data, metric) {
         .range([0, width]);
     
     const y = d3.scaleLinear()
-        .domain([0, d3.max(pivotData, d => d.value)])
+        .domain([d3.min(pivotData, d => d.value), d3.max(pivotData, d => d.value)]) // Adjusted to start from the min value
         .range([height, 0]);
 
     // Add axes

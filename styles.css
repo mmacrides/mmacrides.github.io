@@ -55,10 +55,6 @@ p.box {
     border: 1px solid #ccc;
 }
 
-#chart-definition h3 {
-    text-decoration: underline;
-}
-
 button, select {
     display: block;
     margin: 20px auto;
