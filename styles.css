@@ -92,3 +92,17 @@ button {
     display: block;
     margin: 10px auto; /* Center buttons horizontally */
 }
+
+.tooltip {
+    position: absolute;
+    text-align: center;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    font-size: 12px;
+    background: lightsteelblue;
+    border: 0;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+}

@@ -14,7 +14,7 @@ document.getElementById("begin-button").addEventListener("click", function() {
     d3.csv("personal_income_formatted.csv").then(data => {
         // Filter out blank metrics and remove specific metrics
         const metrics = [...new Set(data.map(d => d.Metric).filter(d => d))];
-        const filteredMetrics = metrics.filter(metric => !(metric.includes("Median") || metric.includes("Mean")));
+        const filteredMetrics = metrics.filter(metric => !(metric.includes("Median") || metric.includes("Mean") || metric.includes("Top 10% share") || metric.includes("Bottom 10% share")));
 
         // Populate dropdown
         const dropdown = d3.select("#metric-dropdown");
@@ -79,6 +79,8 @@ function updateChart(data, metric) {
         .append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
+        .style("border", "1px solid #ddd") // Add border around the chart
+        .style("border-radius", "8px") // Rounded corners
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
@@ -90,7 +92,7 @@ function updateChart(data, metric) {
     // Add padding to the Y-axis domain
     const yMin = d3.min(pivotData, d => d.value);
     const yMax = d3.max(pivotData, d => d.value);
-    const yPadding = (yMax - yMin) * 0.3; // 30% padding
+    const yPadding = (yMax - yMin) * 0.35; // 35% padding
     const y = d3.scaleLinear()
         .domain([yMin - yPadding, yMax + yPadding]) // Adjusted to add padding
         .range([height, 0]);
@@ -119,7 +121,7 @@ function updateChart(data, metric) {
         .text(metric);
 
     // Add line
-    svg.append("path")
+    const line = svg.append("path")
         .datum(pivotData)
         .attr("fill", "none")
         .attr("stroke", "steelblue")
@@ -128,4 +130,31 @@ function updateChart(data, metric) {
             .x(d => x(d.year))
             .y(d => y(d.value))
         );
+
+    // Add dots
+    const dots = svg.selectAll("dot")
+        .data(pivotData)
+        .enter().append("circle")
+        .attr("cx", d => x(d.year))
+        .attr("cy", d => y(d.value))
+        .attr("r", 5)
+        .attr("fill", "steelblue");
+
+    // Add hover functionality
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    dots.on("mouseover", function(event, d) {
+        tooltip.transition()
+            .duration(200)
+            .style("opacity", .9);
+        tooltip.html(`${metric}, Year: ${d.year}<br>Value: ${d.value}`)
+            .style("left", (event.pageX + 5) + "px")
+            .style("top", (event.pageY - 28) + "px");
+    }).on("mouseout", function() {
+        tooltip.transition()
+            .duration(500)
+            .style("opacity", 0);
+    });
 }
