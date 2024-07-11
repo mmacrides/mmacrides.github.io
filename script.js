@@ -70,9 +70,9 @@ function updateChart(data, metric) {
     }));
 
     // Set up dimensions and margins
-    const margin = {top: 20, right: 30, bottom: 30, left: 40};
+    const margin = {top: 20, right: 30, bottom: 50, left: 60}; // Increased bottom and left margins for labels
     const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom; // Reduced height
+    const height = 400 - margin.top - margin.bottom;
 
     // Create SVG
     const svg = d3.select("#chart")
@@ -90,7 +90,7 @@ function updateChart(data, metric) {
     // Add padding to the Y-axis domain
     const yMin = d3.min(pivotData, d => d.value);
     const yMax = d3.max(pivotData, d => d.value);
-    const yPadding = (yMax - yMin) * 0.1; // 10% padding
+    const yPadding = (yMax - yMin) * 0.2; // 20% padding
     const y = d3.scaleLinear()
         .domain([yMin - yPadding, yMax + yPadding]) // Adjusted to add padding
         .range([height, 0]);
@@ -98,10 +98,23 @@ function updateChart(data, metric) {
     // Add axes
     svg.append("g")
         .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+        .call(d3.axisBottom(x).tickFormat(d3.format("d")))
+        .append("text")
+        .attr("x", width / 2)
+        .attr("y", 40) // Positioning below the axis
+        .attr("fill", "black")
+        .style("text-anchor", "middle")
+        .text("Year");
 
     svg.append("g")
-        .call(d3.axisLeft(y));
+        .call(d3.axisLeft(y))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("x", -height / 2)
+        .attr("y", -50) // Positioning to the left of the axis
+        .attr("fill", "black")
+        .style("text-anchor", "middle")
+        .text(metric);
 
     // Add line
     svg.append("path")

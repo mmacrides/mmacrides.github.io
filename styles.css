@@ -40,23 +40,26 @@ p.box {
 }
 
 #chart-container {
-    display: flex;
-    flex-direction: column; /* Ensure elements stack vertically */
+    display: none;
+    flex-direction: column;
+    align-items: center;
 }
 
 #chart {
-    flex: 3;
-    margin-bottom: 20px; /* Add margin to separate from the chart details container */
+    width: 100%;
+    height: 400px;
+}
+
+#metric-dropdown {
+    margin: 10px 0;
 }
 
 #chart-definition {
-    display: none; /* Initially hide the chart details container */
-    padding: 10px;
-    border: 1px solid #ccc;
     background-color: #e7e7e7; /* Match background color of the intro text container */
+    padding: 20px;
     border-radius: 8px;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Center align text */
+    text-align: center;
 }
 
 button, select {
