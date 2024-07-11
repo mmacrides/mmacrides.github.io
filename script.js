@@ -87,8 +87,12 @@ function updateChart(data, metric) {
         .domain([2012, 2022])
         .range([0, width]);
     
+    // Add padding to the Y-axis domain
+    const yMin = d3.min(pivotData, d => d.value);
+    const yMax = d3.max(pivotData, d => d.value);
+    const yPadding = (yMax - yMin) * 0.1; // 10% padding
     const y = d3.scaleLinear()
-        .domain([d3.min(pivotData, d => d.value), d3.max(pivotData, d => d.value)]) // Adjusted to start from the min value
+        .domain([yMin - yPadding, yMax + yPadding]) // Adjusted to add padding
         .range([height, 0]);
 
     // Add axes
