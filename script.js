@@ -193,19 +193,19 @@ function updateChart(data, metric) {
         annotation2021.append("line")
             .attr("x1", x(annotationData2021.year))
             .attr("y1", y(annotationData2021.value))
-            .attr("x2", x(annotationData2021.year) - 50) // Adjusted based on text box position
-            .attr("y2", y(annotationData2021.value) + 50) // Adjusted based on text box position
+            .attr("x2", x(annotationData2021.year) - 50) // Directly left of the data point
+            .attr("y2", y(annotationData2021.value)) // Same y-coordinate as the data point
             .attr("stroke", "purple")
             .attr("stroke-width", 1)
             .attr("stroke-dasharray", "4");
-
+    
         annotation2021.append("text")
-            .attr("x", x(annotationData2021.year) - 105) // Adjusted based on text box position
-            .attr("y", y(annotationData2021.value) + 50) // Adjusted based on text box position
+            .attr("x", x(annotationData2021.year) - 105) // Directly left of the data point
+            .attr("y", y(annotationData2021.value)) // Same y-coordinate as the data point
             .attr("fill", "purple")
             .style("font-size", "12px")
             .text("2021 had the lowest metrics across all years")
-            .call(wrap, 75);
+            .call(wrap, 100);
     }
 }
 
