@@ -5,19 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Data Visualization</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .tooltip {
-            background-color: white;
-            border: 1px solid #ccc;
-            padding: 5px;
-            border-radius: 3px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            pointer-events: none;
-            position: absolute;
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-    </style>
 </head>
 <body>
     <div id="container">
@@ -25,7 +12,7 @@
         <h2 id="header-text2">by Matt Macrides</h2>
         <p id="intro-text" class="box">This site provides a drill down story of personal income inequality distributions from 2012 - 2022. We start by looking at the United States as a whole, then we drill down into a United States cloropleth to show metric differences across States and then drill down into state specific metrics over the years. I used the Bureau of Economic Analysis (BEA) as my data source for the project: <a href="https://www.bea.gov/data/special-topics/distribution-of-personal-income" target="_blank">https://www.bea.gov/data/special-topics/distribution-of-personal-income</a>.</p>
         
-        <!-- Chart Container -->
+        <!-- Line Chart Container -->
         <div id="chart-container">
             <select id="metric-dropdown" style="display: none;"></select>
             <div id="chart"></div>
@@ -34,13 +21,15 @@
             </div>
         </div>
 
+        <!-- Bar Chart Container -->
+        <div id="bar-chart-container" style="display: none;">
+            <div id="bar-chart"></div>
+        </div>
+
         <!-- Buttons -->
         <button id="begin-button">Start</button>
         <button id="back-button" style="display: none;">Back</button>
     </div>
-
-    <!-- Tooltip -->
-    <div class="tooltip"></div>
 
     <!-- JavaScript Libraries -->
     <script src="https://d3js.org/d3.v7.min.js"></script>

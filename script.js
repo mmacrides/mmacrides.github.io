@@ -1,6 +1,6 @@
 document.getElementById("begin-button").addEventListener("click", function() {
     // Update header text and show relevant elements
-    document.getElementById("header-text").innerText = "Income Distributions over the Years";
+    document.getElementById("header-text").innerText = "Income Distribution over the Years";
     document.getElementById("header-text").style.border = "1px solid #ddd";
     document.getElementById("header-text").style.borderRadius = "8px";
     document.getElementById("header-text").style.padding = "10px";
@@ -156,6 +156,9 @@ function updateChart(data, metric) {
         .on("mouseout", function() {
             d3.select(".tooltip")
                 .style("opacity", 0);
+        })
+        .on("click", function(event, d) {
+            showBarChart(d.year);
         });
 
     // Draw annotation for the 2014 data point
@@ -183,54 +186,96 @@ function updateChart(data, metric) {
             .call(wrap, 75);
     }
 
-    // Draw annotation for the 2021 data point
-    const annotationData2021 = pivotData.find(d => d.year === 2021);
-
-    if (annotationData2021) {
-        const annotation2021 = svg.append("g")
-            .attr("class", "annotation-group");
-
-        annotation2021.append("line")
-            .attr("x1", x(annotationData2021.year))
-            .attr("y1", y(annotationData2021.value))
-            .attr("x2", x(annotationData2021.year) - 50) // Directly left of the data point
-            .attr("y2", y(annotationData2021.value)) // Same y-coordinate as the data point
-            .attr("stroke", "purple")
-            .attr("stroke-width", 1)
-            .attr("stroke-dasharray", "4");
+    // Tooltip
+    const tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
     
-        annotation2021.append("text")
-            .attr("x", x(annotationData2021.year) - 105) // Directly left of the data point
-            .attr("y", y(annotationData2021.value)) // Same y-coordinate as the data point
-            .attr("fill", "purple")
-            .style("font-size", "12px")
-            .text("2021 had the lowest metrics across all years")
-            .call(wrap, 100);
+    // Wrap function for text
+    function wrap(text, width) {
+        text.each(function() {
+            const text = d3.select(this),
+                words = text.text().split(/\s+/).reverse(),
+                lineHeight = 1.1, // ems
+                y = text.attr("y"),
+                dy = parseFloat(text.attr("dy")) || 0,
+                tspan = text.text(null).append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", dy + "em");
+            
+            let line = [],
+                lineNumber = 0,
+                word,
+                tspanNode = tspan.node();
+                
+            while (word = words.pop()) {
+                line.push(word);
+                tspanNode.textContent = line.join(" ");
+                if (tspanNode.getComputedTextLength() > width) {
+                    line.pop();
+                    tspanNode.textContent = line.join(" ");
+                    line = [word];
+                    tspan = text.append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
+                    tspanNode = tspan.node();
+                }
+            }
+        });
     }
 }
 
-// Function to wrap text in SVG text element
-function wrap(text, width) {
-    text.each(function() {
-        var text = d3.select(this),
-            words = text.text().split(/\s+/).reverse(),
-            word,
-            line = [],
-            lineNumber = 0,
-            lineHeight = 1.1, // ems
-            y = text.attr("y"),
-            dy = parseFloat(text.attr("dy") || 0),
-            tspan = text.text(null).append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", dy + "em");
-        
-        while (word = words.pop()) {
-            line.push(word);
-            tspan.text(line.join(" "));
-            if (tspan.node().getComputedTextLength() > width) {
-                line.pop();
-                tspan.text(line.join(" "));
-                line = [word];
-                tspan = text.append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-            }
-        }
-    });
+function showBarChart(year) {
+    // Update the header text
+    document.getElementById("header-text").innerText = "Another chart";
+    
+    // Clear the current chart
+    d3.select("#chart").html("");
+    
+    // Create dummy data for the bar chart
+    const data = [
+        {category: "A", value: Math.random() * 100},
+        {category: "B", value: Math.random() * 100},
+        {category: "C", value: Math.random() * 100},
+        {category: "D", value: Math.random() * 100},
+    ];
+
+    // Set up dimensions and margins
+    const margin = {top: 20, right: 30, bottom: 50, left: 60};
+    const width = 800 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    // Create SVG
+    const svg = d3.select("#chart")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    // Set up scales
+    const x = d3.scaleBand()
+        .domain(data.map(d => d.category))
+        .range([0, width])
+        .padding(0.1);
+
+    const y = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.value)])
+        .range([height, 0]);
+
+    // Add axes
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(x));
+
+    svg.append("g")
+        .call(d3.axisLeft(y));
+
+    // Draw bars
+    svg.selectAll(".bar")
+        .data(data)
+        .enter().append("rect")
+        .attr("class", "bar")
+        .attr("x", d => x(d.category))
+        .attr("y", d => y(d.value))
+        .attr("width", x.bandwidth())
+        .attr("height", d => height - y(d.value))
+        .attr("fill", "#007bff");
 }
