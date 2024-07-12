@@ -183,8 +183,34 @@ function updateChart(data, metric) {
             .attr("fill", "purple")
             .style("font-size", "12px")
             .text("Hover over the data points to see the exact values")
-            .call(wrap, 150); // Increased width for text wrapping
+            .call(wrap, 75); // Increased width for text wrapping
     }
+
+    // Draw annotation for the 2021 data point
+    const annotationData2021 = pivotData.find(d => d.year === 2021);
+
+    if (annotationData2021) {
+        const annotation2021 = svg.append("g")
+            .attr("class", "annotation-group");
+
+        annotation2021.append("line")
+            .attr("x1", x(annotationData2021.year))
+            .attr("y1", y(annotationData2021.value))
+            .attr("x2", x(annotationData2021.year) - 50) // Directly left of the data point
+            .attr("y2", y(annotationData2021.value)) // Same y-coordinate as the data point
+            .attr("stroke", "purple")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "4");
+
+        annotation2021.append("text")
+            .attr("x", x(annotationData2021.year) - 105) // Directly left of the data point
+            .attr("y", y(annotationData2021.value)) // Same y-coordinate as the data point
+            .attr("fill", "purple")
+            .style("font-size", "12px")
+            .text("2021 had the lowest metrics across all years")
+            .call(wrap, 100);
+    }
+
 
     // Tooltip
     const tooltip = d3.select("body")
@@ -223,7 +249,8 @@ function updateChart(data, metric) {
 function showBarChart(year) {
     // Update the header text
     document.getElementById("header-text").innerText = "Another chart";
-    
+    document.getElementById("chart-definition").innerText = "Another chart details";
+
     // Clear the current chart
     d3.select("#chart").html("");
     
