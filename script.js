@@ -43,9 +43,10 @@ document.getElementById("begin-button").addEventListener("click", function() {
 document.getElementById("back-button").addEventListener("click", function() {
     // Update header text and show intro elements
     document.getElementById("header-text").innerText = "Welcome to My Interactive Data Visualization";
-    document.getElementById("header-text").style.border = "none";
-    document.getElementById("header-text").style.padding = "0";
-    document.getElementById("header-text").style.backgroundColor = "transparent"; // Optional: Remove background color
+    document.getElementById("header-text").style.border = "1px solid #ddd";
+    document.getElementById("header-text").style.borderRadius = "8px";
+    document.getElementById("header-text").style.padding = "10px";
+    document.getElementById("header-text").style.backgroundColor = "#f5f5f5"; // Optional: Add background color
     document.getElementById("intro-text").style.display = "block";
     document.getElementById("begin-button").style.display = "block";
     document.getElementById("header-text2").style.display = "block";
@@ -179,6 +180,31 @@ function updateChart(data, metric) {
             .attr("fill", "purple")
             .style("font-size", "12px")
             .text("Hover over the data points to see the exact values")
+            .call(wrap, 75);
+    }
+
+    // Draw annotation for the 2021 data point
+    const annotationData2021 = pivotData.find(d => d.year === 2021);
+
+    if (annotationData2021) {
+        const annotation2021 = svg.append("g")
+            .attr("class", "annotation-group");
+
+        annotation2021.append("line")
+            .attr("x1", x(annotationData2021.year))
+            .attr("y1", y(annotationData2021.value))
+            .attr("x2", x(annotationData2021.year) - 50) // Adjusted based on text box position
+            .attr("y2", y(annotationData2021.value) + 50) // Adjusted based on text box position
+            .attr("stroke", "purple")
+            .attr("stroke-width", 1)
+            .attr("stroke-dasharray", "4");
+
+        annotation2021.append("text")
+            .attr("x", x(annotationData2021.year) - 105) // Adjusted based on text box position
+            .attr("y", y(annotationData2021.value) + 50) // Adjusted based on text box position
+            .attr("fill", "purple")
+            .style("font-size", "12px")
+            .text("2021 had the lowest metrics across all years")
             .call(wrap, 75);
     }
 }
