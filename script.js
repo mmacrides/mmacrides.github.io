@@ -171,19 +171,19 @@ function updateChart(data, metric) {
         annotation.append("line")
             .attr("x1", x(annotationData.year))
             .attr("y1", y(annotationData.value))
-            .attr("x2", x(annotationData.year) + 50) // Adjusted based on text box position
-            .attr("y2", y(annotationData.value) - 50) // Adjusted based on text box position
+            .attr("x2", x(annotationData.year) + 60) // Adjusted based on text box position
+            .attr("y2", y(annotationData.value) - 60) // Adjusted based on text box position
             .attr("stroke", "purple")
             .attr("stroke-width", 1)
             .attr("stroke-dasharray", "4");
 
         annotation.append("text")
-            .attr("x", x(annotationData.year) + 55) // Adjusted based on text box position
+            .attr("x", x(annotationData.year) + 65) // Adjusted based on text box position
             .attr("y", y(annotationData.value) - 70) // Adjusted based on text box position
             .attr("fill", "purple")
             .style("font-size", "12px")
             .text("Hover over the data points to see the exact values")
-            .call(wrap, 75);
+            .call(wrap, 150); // Increased width for text wrapping
     }
 
     // Tooltip
@@ -195,27 +195,25 @@ function updateChart(data, metric) {
     // Wrap function for text
     function wrap(text, width) {
         text.each(function() {
-            const text = d3.select(this),
-                words = text.text().split(/\s+/).reverse(),
-                lineHeight = 1.1, // ems
-                y = text.attr("y"),
-                dy = parseFloat(text.attr("dy")) || 0,
-                tspan = text.text(null).append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", dy + "em");
-            
-            let line = [],
-                lineNumber = 0,
-                word,
-                tspanNode = tspan.node();
-                
+            const text = d3.select(this);
+            const words = text.text().split(/\s+/).reverse();
+            let word;
+            let line = [];
+            let lineNumber = 0;
+            const lineHeight = 1.1; // ems
+            const y = text.attr("y");
+            const x = text.attr("x");
+            const dy = parseFloat(text.attr("dy")) || 0;
+            let tspan = text.text(null).append("tspan").attr("x", x).attr("y", y).attr("dy", dy + "em");
+
             while (word = words.pop()) {
                 line.push(word);
-                tspanNode.textContent = line.join(" ");
-                if (tspanNode.getComputedTextLength() > width) {
+                tspan.text(line.join(" "));
+                if (tspan.node().getComputedTextLength() > width) {
                     line.pop();
-                    tspanNode.textContent = line.join(" ");
+                    tspan.text(line.join(" "));
                     line = [word];
-                    tspan = text.append("tspan").attr("x", text.attr("x")).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
-                    tspanNode = tspan.node();
+                    tspan = text.append("tspan").attr("x", x).attr("y", y).attr("dy", ++lineNumber * lineHeight + dy + "em").text(word);
                 }
             }
         });
@@ -278,4 +276,21 @@ function showBarChart(year) {
         .attr("width", x.bandwidth())
         .attr("height", d => height - y(d.value))
         .attr("fill", "#007bff");
+
+    // Reinitialize tooltip
+    const tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+    svg.selectAll(".bar")
+        .on("mouseover", function(event, d) {
+            tooltip.style("opacity", 1)
+                .html(`Category: ${d.category}<br>Value: ${d.value.toFixed(2)}`)
+                .style("left", (event.pageX + 5) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.style("opacity", 0);
+        });
 }
