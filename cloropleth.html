@@ -12,12 +12,18 @@
     </style>
 </head>
 <body>
-    <h1>Choropleth Chart</h1>
-    <div id="chart"></div>
-    <div id="legend"></div>
+    <div id="container">
+        <h1 id="header-text">Chloropleth Map</h1>
+        <div id="chart"></div>
+        <div id="legend"></div>
+        <button id="begin-button">Back</button>
+    </div>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script>
+        document.getElementById("back-button").addEventListener("click", function() {
+            window.location.href = "linechart.html";
+        });
         // Extract the year from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const year = urlParams.get('year');

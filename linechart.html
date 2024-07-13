@@ -10,12 +10,13 @@
 <body>
     <div id="container">
         <h1 id="header-text">Income Distribution over the Years</h1>
-        <button id="back-button">Back</button>
         <select id="metric-dropdown"></select>
-    <div id="chart-container" style="display: flex;">
-        <div id="chart"></div>
-        <p id="intro-text" class="box">hi</p>
-    </div></div>
+        <div id="chart-container" style="display: flex;">
+            <div id="chart"></div>
+            <p id="intro-text" class="box">This scene shows the distribution of income metrics in the United States over time. The "Eq. X/Y ratio" compares the income of individuals at the Xth percentile to the income of individuals at the Yth percentile. The larger the value, the more income disparity between groups. The Gini Coefficient is another measure of income inequality. A score of 0 means perfect equality, and a score of 1 means perfect inequality.</p>
+            <button id="back-button">Back</button>
+        </div>
+    </div>
 
     <script>
         document.getElementById("back-button").addEventListener("click", function() {
