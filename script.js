@@ -57,6 +57,27 @@ document.getElementById("back-button").addEventListener("click", function() {
     document.getElementById("chart-definition").style.display = "none";
 });
 
+document.getElementById("back-button-2").addEventListener("click", function() {
+    // Go back to the line graph scene
+    document.getElementById("header-text").innerText = "Income Distribution over the Years";
+    document.getElementById("chart-definition").innerText = "Specific definition for the Eq. 90/10 Ratio";
+
+    // Hide the dummy bar chart
+    d3.select("#chart").html("");
+
+    // Hide back-button-2 and show back-button
+    document.getElementById("back-button-2").style.display = "none";
+    document.getElementById("back-button").style.display = "block";
+
+    // Load and process data for the line chart
+    d3.csv("personal_income_formatted.csv").then(data => {
+        const metrics = [...new Set(data.map(d => d.Metric).filter(d => d))];
+        const filteredMetrics = metrics.filter(metric => !(metric.includes("Median") || metric.includes("Mean") || metric.includes("Top 10% share") || metric.includes("Bottom 10% share")));
+        updateChart(data, filteredMetrics[0]);
+    });
+});
+
+
 function updateChart(data, metric) {
     // Clear the current SVG
     d3.select("#chart").html("");
@@ -250,6 +271,10 @@ function showBarChart(year) {
     // Update the header text
     document.getElementById("header-text").innerText = "Another chart";
     document.getElementById("chart-definition").innerText = "Another chart details";
+
+    // Hide back-button and show back-button-2
+    document.getElementById("back-button").style.display = "none";
+    document.getElementById("back-button-2").style.display = "block";
 
     // Clear the current chart
     d3.select("#chart").html("");
