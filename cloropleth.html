@@ -4,19 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choropleth</title>
-    <style>
-        /* Add any necessary styles here */
-        .legend {
-            font-size: 12px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="container">
         <h1 id="header-text">Chloropleth Map</h1>
-        <div id="chart"></div>
-        <div id="legend"></div>
-        <button id="back-button">Back</button>
+        <div id="chart-container" style="display: flex;">
+            <div id="chart"></div>
+            <div id="legend"></div>
+            <p id="intro-text" class="box">cloropleth</p>
+            <button id="back-button">Back</button>
+        </div>
     </div>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
