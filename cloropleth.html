@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choropleth</title>
+    <style>
+        /* Add any necessary styles here */
+        .legend {
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Choropleth Chart</h1>
+    <div id="chart"></div>
+    <div id="legend"></div>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+    <script>
+        // Extract the year from the URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const year = urlParams.get('year');
+
+        // Load data and render the choropleth chart based on the year
+        d3.csv("personal_income_formatted.csv").then(data => {
+            // Filter data for the specific year
+            const yearData = data.filter(d => d.year == year);
+
+            // Map the state to the Eq. 90/10 ratio
+            const stateData = new Map();
+            yearData.forEach(d => stateData.set(d.state, +d["Eq. 90/10 ratio"]));
+
+            // Set up the dimensions and margins
+            const margin = {top: 20, right: 30, bottom: 50, left: 60};
+            const width = 960 - margin.left - margin.right;
+            const height = 600 - margin.top - margin.bottom;
+
+            // Create SVG
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // Define the color scale
+            const color = d3.scaleQuantize()
+                .domain([d3.min(yearData, d => +d["Eq. 90/10 ratio"]), d3.max(yearData, d => +d["Eq. 90/10 ratio"])])
+                .range(d3.schemeBlues[9]);
+
+            // Load the map data
+            d3.json("https://d3js.org/us-10m.v1.json").then(us => {
+                // Draw the map
+                svg.append("g")
+                    .selectAll("path")
+                    .data(topojson.feature(us, us.objects.states).features)
+                    .enter().append("path")
+                    .attr("fill", d => color(stateData.get(d.id) || 0))
+                    .attr("d", d3.geoPath())
+                    .append("title")
+                    .text(d => `${d.properties.name}: ${stateData.get(d.id) || 0}`);
+
+                // Add the legend
+                const legend = d3.select("#legend")
+                    .append("svg")
+                    .attr("width", 400)
+                    .attr("height", 50)
+                    .attr("class", "legend");
+
+                const legendScale = d3.scaleLinear()
+                    .domain([d3.min(yearData, d => +d["Eq. 90/10 ratio"]), d3.max(yearData, d => +d["Eq. 90/10 ratio"])])
+                    .range([0, 300]);
+
+                const legendAxis = d3.axisBottom(legendScale)
+                    .ticks(9)
+                    .tickFormat(d3.format(".2f"));
+
+                const legendData = d3.range(9).map(i => d3.quantile(color.domain(), i / 8));
+
+                legend.selectAll("rect")
+                    .data(legendData)
+                    .enter().append("rect")
+                    .attr("x", (d, i) => i * 30)
+                    .attr("y", 0)
+                    .attr("width", 30)
+                    .attr("height", 20)
+                    .attr("fill", d => color(d));
+
+                legend.append("g")
+                    .attr("transform", "translate(0,20)")
+                    .call(legendAxis);
+            });
+        });
+    </script>
+</body>
+</html>
+

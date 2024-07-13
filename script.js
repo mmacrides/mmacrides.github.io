@@ -179,7 +179,9 @@ function updateChart(data, metric) {
                 .style("opacity", 0);
         })
         .on("click", function(event, d) {
-            showBarChart(d.year);
+            //showBarChart(d.year);
+            window.location.href = `cloropleth.html?year=${d.year}`;
+
         });
 
     // Draw annotation for the 2014 data point
