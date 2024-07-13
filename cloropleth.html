@@ -29,17 +29,18 @@
 
         // Load data and render the choropleth chart based on the year
         d3.csv("personal_income_formatted.csv").then(data => {
-            // Pivot the data to get the format {state: State, value: Eq. 90/10 ratio for the year}
-            const pivotedData = data.map(d => {
+            // Filter data for the specific metric
+            const metric = "Eq. 90/10 ratio";
+            const metricData = data.filter(d => d.Metric === metric);
+
+            // Filter data for the specific year
+            const yearData = metricData.map(d => {
                 return {
                     state: d["State"],
-                    value: +d[year] // Use the year directly as a key
+                    value: +d[year]
                 };
             });
-
-            // Filter out entries without values
-            const yearData = pivotedData.filter(d => !isNaN(d.value));
-
+            
             // Map the state to the Eq. 90/10 ratio
             const stateData = new Map();
             yearData.forEach(d => stateData.set(d.state, d.value));
