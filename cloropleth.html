@@ -12,9 +12,9 @@
         <div id="chart-container" style="display: flex;">
             <div id="chart"></div>
             <div id="legend"></div>
-        </div>
             <p id="intro-text" class="box">fdvfvrgvrg</p>
             <button id="back-button">Back</button>
+        </div>
     </div>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
@@ -22,18 +22,27 @@
         document.getElementById("back-button").addEventListener("click", function() {
             window.location.href = "linechart.html";
         });
+
         // Extract the year from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const year = urlParams.get('year');
 
         // Load data and render the choropleth chart based on the year
         d3.csv("personal_income_formatted.csv").then(data => {
-            // Filter data for the specific year
-            const yearData = data.filter(d => d.year == year);
+            // Pivot the data to get the format {state: State, value: Eq. 90/10 ratio for the year}
+            const pivotedData = data.map(d => {
+                return {
+                    state: d["State"],
+                    value: +d[year] // Use the year directly as a key
+                };
+            });
+
+            // Filter out entries without values
+            const yearData = pivotedData.filter(d => !isNaN(d.value));
 
             // Map the state to the Eq. 90/10 ratio
             const stateData = new Map();
-            yearData.forEach(d => stateData.set(d.state, +d["Eq. 90/10 ratio"]));
+            yearData.forEach(d => stateData.set(d.state, d.value));
 
             // Set up the dimensions and margins
             const margin = {top: 20, right: 30, bottom: 50, left: 60};
@@ -50,7 +59,7 @@
 
             // Define the color scale
             const color = d3.scaleQuantize()
-                .domain([d3.min(yearData, d => +d["Eq. 90/10 ratio"]), d3.max(yearData, d => +d["Eq. 90/10 ratio"])])
+                .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                 .range(d3.schemeBlues[9]);
 
             // Load the map data
@@ -73,7 +82,7 @@
                     .attr("class", "legend");
 
                 const legendScale = d3.scaleLinear()
-                    .domain([d3.min(yearData, d => +d["Eq. 90/10 ratio"]), d3.max(yearData, d => +d["Eq. 90/10 ratio"])])
+                    .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                     .range([0, 300]);
 
                 const legendAxis = d3.axisBottom(legendScale)
