@@ -4,15 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Data Visualization</title>
+    <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
 <body>
-    <h1 id="header-text">Income Distribution over the Years</h1>
-    <button id="back-button">Back</button>
-    <select id="metric-dropdown"></select>
+    <div id="container">
+        <h1 id="header-text">Income Distribution over the Years</h1>
+        <button id="back-button">Back</button>
+        <select id="metric-dropdown"></select>
+    </div>
     <div id="chart-container" style="display: flex;">
         <div id="chart"></div>
-        <p id="intro-text" class="box">This site provides a drill down story of personal income inequality distributions from 2012 - 2022. We start by looking at the United States as a whole, then we drill down into a United States cloropleth to show metric differences across States and then drill down into state specific metrics over the years. I used the Bureau of Economic Analysis (BEA) as my data source for the project: <a href="https://www.bea.gov/data/special-topics/distribution-of-personal-income" target="_blank">https://www.bea.gov/data/special-topics/distribution-of-personal-income</a>.</p>
+        <p id="intro-text" class="box">hi</p>
     </div>
 
     <script>
