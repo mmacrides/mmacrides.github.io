@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Data Visualization - Visualization</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="container">
+        <h1 id="header-text">Income Distribution Over the Years</h1>
+        
+        <!-- Line Chart Container -->
+        <div id="chart-container">
+            <select id="metric-dropdown" style="display: none;"></select>
+            <div id="chart"></div>
+            <div id="chart-definition" class="box">
+                <p>This scene shows the distribution of income metrics in the United States over time. The "Eq. X/Y ratio" compares the income of individuals at the Xth percentile to the income of individuals at the Yth percentile. The larger the value, the more income disparity between groups. The Gini Coefficient is another measure of income inequality. A score of 0 means perfect equality, and a score of 1 means perfect inequality.</p>
+            </div>
+        </div>
+
+        <!-- Buttons -->
+        <button id="back-button">Back to Main Page</button>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

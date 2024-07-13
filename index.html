@@ -11,27 +11,15 @@
         <h1 id="header-text">Welcome to My Interactive Data Visualization</h1>
         <h2 id="header-text2">by Matt Macrides</h2>
         <p id="intro-text" class="box">This site provides a drill down story of personal income inequality distributions from 2012 - 2022. We start by looking at the United States as a whole, then we drill down into a United States cloropleth to show metric differences across States and then drill down into state specific metrics over the years. I used the Bureau of Economic Analysis (BEA) as my data source for the project: <a href="https://www.bea.gov/data/special-topics/distribution-of-personal-income" target="_blank">https://www.bea.gov/data/special-topics/distribution-of-personal-income</a>.</p>
-        
-        <!-- Line Chart Container -->
-        <div id="chart-container">
-            <select id="metric-dropdown" style="display: none;"></select>
-            <div id="chart"></div>
-            <div id="chart-definition" class="box">
-                <p>This scene shows the distribution of income metrics in the United States over time. The "Eq. X/Y ratio" compares the income of individuals at the Xth percentile to the income of individuals at the Yth percentile. The larger the value, the more income disparity between groups. The Gini Coefficient is another measure of income inequality. A score of 0 means perfect equality, and a score of 1 means perfect inequality.</p>
-            </div>
-        </div>
-
-        <!-- Bar Chart Container -->
-        <div id="bar-chart-container" style="display: none;">
-            <div id="bar-chart"></div>
-        </div>
 
         <!-- Buttons -->
         <button id="begin-button">Start</button>
-        <button id="back-button" style="display: none;">Back to Main Page</button>
-        <button id="back-button-2" style="display:none;">Back to Income Metrics Over the Years</button>
     </div>
-
+    <script>
+        document.getElementById("begin-button").addEventListener("click", function() {
+            window.location.href = "visual2.html";
+        });
+    </script>
     <!-- JavaScript Libraries -->
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="script.js"></script>
