@@ -22,11 +22,11 @@
 </head>
 <body>
     <div id="container">
-        <h1 id="header-text">Choropleth Map - <span id="year-title"></span></h1>
+        <h1 id="header-text"><span id="metric-title"></span> across the States - <span id="year-title"></span></h1>
         <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div id="chart"></div>
             <div id="legend"></div>
-            <p id="intro-text" class="box">Choropleth map showing Eq. 90/10 ratio.</p>
+            <p id="intro-text" class="box">Choropleth map showing <span id="metric-title"></span></p>
             <button id="back-button">Back</button>
         </div>
     </div>
@@ -41,7 +41,9 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const year = urlParams.get('year');
+        const metric = urlParams.get('metric');
         document.getElementById("year-title").textContent = year;
+        document.getElementById("metric-title").textContent = metric;
 
         d3.csv("personal_income_formatted.csv").then(data => {
             const metric = "Eq. 90/10 ratio";
