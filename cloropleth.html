@@ -22,17 +22,17 @@
         document.getElementById("back-button").addEventListener("click", function() {
             window.location.href = "linechart.html";
         });
-
+    
         // Extract the year from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const year = urlParams.get('year');
-
+    
         // Load data and render the choropleth chart based on the year
         d3.csv("personal_income_formatted.csv").then(data => {
             // Filter data for the specific metric
             const metric = "Eq. 90/10 ratio";
             const metricData = data.filter(d => d.Metric === metric);
-
+    
             // Filter data for the specific year
             const yearData = metricData.map(d => {
                 return {
@@ -40,16 +40,16 @@
                     value: +d[year]
                 };
             });
-            
+    
             // Map the state to the Eq. 90/10 ratio
             const stateData = new Map();
             yearData.forEach(d => stateData.set(d.state, d.value));
-
+    
             // Set up the dimensions and margins
             const margin = {top: 20, right: 30, bottom: 50, left: 60};
             const width = 960 - margin.left - margin.right;
             const height = 600 - margin.top - margin.bottom;
-
+    
             // Create SVG
             const svg = d3.select("#chart")
                 .append("svg")
@@ -57,12 +57,15 @@
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
-
+    
             // Define the color scale
             const color = d3.scaleQuantize()
                 .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                 .range(d3.schemeBlues[9]);
-
+    
+            // Tooltip for displaying data values on hover
+            const tooltip = d3.select(".tooltip");
+    
             // Load the map data
             d3.json("https://d3js.org/us-10m.v1.json").then(us => {
                 // Draw the map
@@ -72,26 +75,41 @@
                     .enter().append("path")
                     .attr("fill", d => color(stateData.get(d.id) || 0))
                     .attr("d", d3.geoPath())
+                    .on("mouseover", function(event, d) {
+                        const stateName = d.properties.name;
+                        const stateValue = stateData.get(d.id) || 0;
+                        tooltip.transition()
+                            .duration(200)
+                            .style("opacity", .9);
+                        tooltip.html(`${stateName}: ${stateValue}`)
+                            .style("left", (event.pageX + 5) + "px")
+                            .style("top", (event.pageY - 28) + "px");
+                    })
+                    .on("mouseout", function() {
+                        tooltip.transition()
+                            .duration(500)
+                            .style("opacity", 0);
+                    })
                     .append("title")
                     .text(d => `${d.properties.name}: ${stateData.get(d.id) || 0}`);
-
+    
                 // Add the legend
                 const legend = d3.select("#legend")
                     .append("svg")
                     .attr("width", 400)
                     .attr("height", 50)
                     .attr("class", "legend");
-
+    
                 const legendScale = d3.scaleLinear()
                     .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                     .range([0, 300]);
-
+    
                 const legendAxis = d3.axisBottom(legendScale)
                     .ticks(9)
                     .tickFormat(d3.format(".2f"));
-
+    
                 const legendData = d3.range(9).map(i => d3.quantile(color.domain(), i / 8));
-
+    
                 legend.selectAll("rect")
                     .data(legendData)
                     .enter().append("rect")
@@ -100,13 +118,13 @@
                     .attr("width", 30)
                     .attr("height", 20)
                     .attr("fill", d => color(d));
-
+    
                 legend.append("g")
                     .attr("transform", "translate(0,20)")
                     .call(legendAxis);
             });
         });
-    </script>
+    </script>    
 </body>
 </html>
 
