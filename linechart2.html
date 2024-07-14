@@ -21,7 +21,10 @@
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script>
         document.getElementById("back-button").addEventListener("click", function() {
-            window.location.href = "cloropleth.html";
+            const urlParams = new URLSearchParams(window.location.search);
+            const metric = urlParams.get('metric');
+            const year = urlParams.get('year');
+            window.location.href = `cloropleth.html?metric=${metric}&year=${year}`;
         });
 
         // Extract state parameter from URL
