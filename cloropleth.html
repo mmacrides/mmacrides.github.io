@@ -5,35 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Choropleth</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        #chart-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-        #chart {
-            width: 400px; /* Set a smaller width */
-            height: 300px; /* Set a smaller height */
-        }
-        #legend {
-            width: 400px; /* Maintain legend width */
-        }
-        .tooltip {
-            position: absolute;
-            text-align: center;
-            padding: 5px;
-            background: lightsteelblue;
-            border-radius: 8px;
-            pointer-events: none;
-            opacity: 0; /* Start hidden */
-        }
-    </style>
 </head>
 <body>
     <div id="container">
         <h1 id="header-text">Choropleth Map - <span id="year-title"></span></h1>
-        <div id="chart-container">
+        <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div id="chart"></div>
             <div id="legend"></div>
             <p id="intro-text" class="box">fdvfvrgvrg</p>
