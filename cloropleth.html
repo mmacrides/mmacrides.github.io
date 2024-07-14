@@ -125,18 +125,72 @@
                 "56": "Wyoming"
             };
 
+            const stateCodes = {
+                "Alabama": "01",
+                "Alaska": "02",
+                "Arizona": "04",
+                "Arkansas": "05",
+                "California": "06",
+                "Colorado": "08",
+                "Connecticut": "09",
+                "Delaware": "10",
+                "District of Columbia": "11",
+                "Florida": "12",
+                "Georgia": "13",
+                "Hawaii": "15",
+                "Idaho": "16",
+                "Illinois": "17",
+                "Indiana": "18",
+                "Iowa": "19",
+                "Kansas": "20",
+                "Kentucky": "21",
+                "Louisiana": "22",
+                "Maine": "23",
+                "Maryland": "24",
+                "Massachusetts": "25",
+                "Michigan": "26",
+                "Minnesota": "27",
+                "Mississippi": "28",
+                "Missouri": "29",
+                "Montana": "30",
+                "Nebraska": "31",
+                "Nevada": "32",
+                "New Hampshire": "33",
+                "New Jersey": "34",
+                "New Mexico": "35",
+                "New York": "36",
+                "North Carolina": "37",
+                "North Dakota": "38",
+                "Ohio": "39",
+                "Oklahoma": "40",
+                "Oregon": "41",
+                "Pennsylvania": "42",
+                "Rhode Island": "44",
+                "South Carolina": "45",
+                "South Dakota": "46",
+                "Tennessee": "47",
+                "Texas": "48",
+                "Utah": "49",
+                "Vermont": "50",
+                "Virginia": "51",
+                "Washington": "53",
+                "West Virginia": "54",
+                "Wisconsin": "55",
+                "Wyoming": "56"
+            };
+
+            const stateDataMapped = new Map(yearData.map(d => [stateCodes[d.state], d.value]));
 
             d3.json("https://d3js.org/us-10m.v1.json").then(us => {
                 svg.append("g")
                     .selectAll("path")
                     .data(topojson.feature(us, us.objects.states).features)
                     .enter().append("path")
-                    .attr("fill", d => color(stateData.get(d.id) || 0))
+                    .attr("fill", d => color(stateDataMapped.get(d.id) || 0))
                     .attr("d", d3.geoPath())
                     .on("mouseover", function(event, d) {
-                        //const stateName = d.properties.name;
-                        const stateName = stateNames[d.id]; // Use the mapping
-                        const stateValue = stateData.get(d.id) || 0;
+                        const stateName = stateNames[d.id]; 
+                        const stateValue = stateDataMapped.get(d.id) || 0;
                         tooltip.transition().duration(200).style("opacity", .9);
                         tooltip.html(`${stateName}, ${year}: ${stateValue}`)
                             .style("left", (event.pageX + 5) + "px")
@@ -150,7 +204,7 @@
                         window.location.href = `linechart2.html?state=${stateName}`;
                     })
                     .append("title")
-                    .text(d => `${d.properties.name}: ${stateData.get(d.id) || 0}`);
+                    .text(d => `${stateNames[d.id]}: ${stateDataMapped.get(d.id) || 0}`);
 
                 const legend = d3.select("#legend")
                     .append("svg")
@@ -166,19 +220,19 @@
                     .ticks(9)
                     .tickFormat(d3.format(".2f"));
 
-                const legendData = d3.range(9).map(i => d3.quantile(color.domain(), i / 8));
+                const legendData = d3.range(9).map(i => d3.interpolateBlues(i / 8));
 
                 legend.selectAll("rect")
                     .data(legendData)
                     .enter().append("rect")
-                    .attr("x", (d, i) => i * 30)
+                    .attr("x", (d, i) => i * 300 / legendData.length)
                     .attr("y", 0)
-                    .attr("width", 30)
-                    .attr("height", 20)
-                    .attr("fill", d => color(d));
+                    .attr("width", 300 / legendData.length)
+                    .attr("height", 10)
+                    .style("fill", d => d);
 
                 legend.append("g")
-                    .attr("transform", "translate(0,20)")
+                    .attr("transform", "translate(0, 10)")
                     .call(legendAxis);
             });
         });
