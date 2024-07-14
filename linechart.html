@@ -164,14 +164,14 @@
                 annotation.append("line")
                     .attr("x1", x(annotationData.year))
                     .attr("y1", y(annotationData.value))
-                    .attr("x2", x(annotationData.year) + 60) // Adjusted based on text box position
+                    .attr("x2", x(annotationData.year) + 55) // Adjusted based on text box position
                     .attr("y2", y(annotationData.value) - 60) // Adjusted based on text box position
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
 
                 annotation.append("text")
-                    .attr("x", x(annotationData.year) + 65) // Adjusted based on text box position
+                    .attr("x", x(annotationData.year) + 60) // Adjusted based on text box position
                     .attr("y", y(annotationData.value) - 80) // Adjusted based on text box position
                     .attr("fill", "purple")
                     .style("font-size", "12px")
@@ -190,14 +190,14 @@
                     .attr("x1", x(annotationData2021.year))
                     .attr("y1", y(annotationData2021.value))
                     .attr("x2", x(annotationData2021.year) - 50) // Directly left of the data point
-                    .attr("y2", y(annotationData2021.value) + 20) // Same y-coordinate as the data point
+                    .attr("y2", y(annotationData2021.value) + 25) // Same y-coordinate as the data point
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
 
                 annotation2021.append("text")
                     .attr("x", x(annotationData2021.year) - 120) // Positioning to the left of the line
-                    .attr("y", y(annotationData2021.value) + 10) // Slightly above the line
+                    .attr("y", y(annotationData2021.value) + 15) // Slightly above the line
                     .attr("fill", "purple")
                     .style("font-size", "12px")
                     .text("Click on a data point to see detailed metrics")
