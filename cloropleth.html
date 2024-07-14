@@ -185,6 +185,10 @@
             };
 
             const stateDataMapped = new Map(yearData.map(d => [stateCodes[d.state], d.value]));
+            const projection = d3.geoAlbersUsa()
+                .scale(1000) // Adjust this scale as needed
+                .translate([width / 2, height / 2]);
+            const path = d3.geoPath().projection(projection);
 
             d3.json("https://d3js.org/us-10m.v1.json").then(us => {
                 svg.append("g")
@@ -192,6 +196,8 @@
                     .data(topojson.feature(us, us.objects.states).features)
                     .enter().append("path")
                     .attr("fill", d => color(stateDataMapped.get(d.id) || 0))
+                    //.attr("d", d3.geoPath())
+                    .attr("d", path) // Use the new path variable here
                     .attr("d", d3.geoPath())
                     .on("mouseover", function(event, d) {
                         const stateName = stateNames[d.id]; 
