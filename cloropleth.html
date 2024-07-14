@@ -145,6 +145,10 @@
                     .on("mouseout", function() {
                         tooltip.transition().duration(500).style("opacity", 0);
                     })
+                    .on("click", function(event, d) {
+                        const stateName = stateNames[d.id];
+                        window.location.href = `linechart2.html?state=${stateName}`;
+                    })
                     .append("title")
                     .text(d => `${d.properties.name}: ${stateData.get(d.id) || 0}`);
 

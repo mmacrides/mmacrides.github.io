@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Chart</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1 id="header-text">Line Chart for <span id="state-name"></span></h1>
+        <div id="chart-container">
+            <div id="chart"></div>
+            <p id="intro-text" class="box">This is the line chart showing data for the selected state.</p>
+            <button id="back-button">Back</button>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script>
+        document.getElementById("back-button").addEventListener("click", function() {
+            window.location.href = "choropleth.html";
+        });
+
+        // Extract state parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const state = urlParams.get('state');
+        document.getElementById("state-name").textContent = state;
+
+        // Fetch and display data for the selected state
+        d3.csv("state_data.csv").then(data => {
+            const stateData = data.filter(d => d.State === state);
+
+            // Create the line chart using stateData
+            const margin = {top: 20, right: 30, bottom: 50, left: 60};
+            const width = 500 - margin.left - margin.right; 
+            const height = 400 - margin.top - margin.bottom;
+
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            const x = d3.scaleBand()
+                .domain(stateData.map(d => d.Year))
+                .range([0, width])
+                .padding(0.1);
+
+            const y = d3.scaleLinear()
+                .domain([0, d3.max(stateData, d => +d.Value)])
+                .range([height, 0]);
+
+            svg.append("g")
+                .attr("class", "x-axis")
+                .attr("transform", `translate(0,${height})`)
+                .call(d3.axisBottom(x));
+
+            svg.append("g")
+                .attr("class", "y-axis")
+                .call(d3.axisLeft(y));
+
+            svg.append("path")
+                .datum(stateData)
+                .attr("fill", "none")
+                .attr("stroke", "steelblue")
+                .attr("stroke-width", 1.5)
+                .attr("d", d3.line()
+                    .x(d => x(d.Year))
+                    .y(d => y(d.Value))
+                );
+        });
+    </script>
+</body>
+</html>
