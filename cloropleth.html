@@ -49,7 +49,7 @@
 
 
         d3.csv("personal_income_formatted.csv").then(data => {
-            const metric = "Eq. 90/10 ratio";
+            //const metric = "Eq. 90/10 ratio";
             const metricData = data.filter(d => d.Metric === metric);
 
             const yearData = metricData.map(d => ({
