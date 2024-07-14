@@ -30,7 +30,7 @@
         document.getElementById("state-name").textContent = state;
 
         // Fetch and display data for the selected state
-        d3.csv("state_data.csv").then(data => {
+        d3.csv("personal_income_formatted.csv").then(data => {
             const stateData = data.filter(d => d.State === state);
 
             // Create the line chart using stateData
