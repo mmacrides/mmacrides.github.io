@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="container" style="width: 1000px;">
+    <div id="container">
         <h1 id="header-text">Choropleth Map - <span id="year-title"></span></h1>
-        <div id="chart-container" style="display: flex;">
+        <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div id="chart"></div>
             <div id="legend"></div>
             <p id="intro-text" class="box">fdvfvrgvrg</p>
@@ -32,11 +32,9 @@
     
         // Load data and render the choropleth chart based on the year
         d3.csv("personal_income_formatted.csv").then(data => {
-            // Filter data for the specific metric
             const metric = "Eq. 90/10 ratio";
             const metricData = data.filter(d => d.Metric === metric);
     
-            // Filter data for the specific year
             const yearData = metricData.map(d => {
                 return {
                     state: d["State"],
@@ -44,16 +42,13 @@
                 };
             });
     
-            // Map the state to the Eq. 90/10 ratio
             const stateData = new Map();
             yearData.forEach(d => stateData.set(d.state, d.value));
     
-            // Set up the dimensions and margins
             const margin = {top: 20, right: 30, bottom: 50, left: 60};
             const width = 960 - margin.left - margin.right;
             const height = 600 - margin.top - margin.bottom;
     
-            // Create SVG
             const svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -61,17 +56,13 @@
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
     
-            // Define the color scale
             const color = d3.scaleQuantize()
                 .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                 .range(d3.schemeBlues[9]);
     
-            // Tooltip for displaying data values on hover
             const tooltip = d3.select(".tooltip");
     
-            // Load the map data
             d3.json("https://d3js.org/us-10m.v1.json").then(us => {
-                // Draw the map
                 svg.append("g")
                     .selectAll("path")
                     .data(topojson.feature(us, us.objects.states).features)
@@ -96,7 +87,6 @@
                     .append("title")
                     .text(d => `${d.properties.name}: ${stateData.get(d.id) || 0}`);
     
-                // Add the legend
                 const legend = d3.select("#legend")
                     .append("svg")
                     .attr("width", 400)
