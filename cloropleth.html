@@ -9,19 +9,14 @@
         .tooltip {
             position: absolute;
             text-align: center;
-            width: 60px;
-            height: 28px;
+            width: 80px;
+            height: auto;
             padding: 4px;
             font: 12px sans-serif;
             background: lightsteelblue;
             border: 0px;
             border-radius: 8px;
             pointer-events: none;
-        }
-
-        #chart {
-            width: 100%; /* or specific pixel value */
-            height: 100%; /* or specific pixel value */
         }
     </style>
 </head>
@@ -59,16 +54,16 @@
 
             const stateData = new Map(yearData.map(d => [d.state, d.value]));
 
-const margin = {top: 20, right: 30, bottom: 50, left: 60};
-const width = 300 - margin.left - margin.right; // Set width smaller
-const height = 200 - margin.top - margin.bottom; // Set height smaller
+            const margin = {top: 20, right: 30, bottom: 50, left: 60};
+            const width = 300 - margin.left - margin.right; 
+            const height = 200 - margin.top - margin.bottom; 
 
-const svg = d3.select("#chart")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+            const svg = d3.select("#chart")
+                .append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", `translate(${margin.left},${margin.top})`);
 
             const color = d3.scaleQuantize()
                 .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
@@ -87,7 +82,9 @@ const svg = d3.select("#chart")
                         const stateName = d.properties.name;
                         const stateValue = stateData.get(d.id) || 0;
                         tooltip.transition().duration(200).style("opacity", .9);
-                        tooltip.html(`${stateName}: ${stateValue}`).style("left", (event.pageX + 5) + "px").style("top", (event.pageY - 28) + "px");
+                        tooltip.html(`${stateName}, ${year}: ${stateValue}`)
+                            .style("left", (event.pageX + 5) + "px")
+                            .style("top", (event.pageY - 28) + "px");
                     })
                     .on("mouseout", function() {
                         tooltip.transition().duration(500).style("opacity", 0);
