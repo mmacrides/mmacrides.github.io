@@ -14,7 +14,7 @@
         <h1 id="header-text">Line Chart for <span id="state-name"></span></h1>
         <div id="chart-container" style="display: flex;">
             <div id="chart"> </div>
-            <p id="intro-text" class="box">This is the line chart showing data for the selected state.</p>
+            <p id="intro-text" class="box">Test</p>
             <button id="back-button">Back</button>
         </div>
     </div>
@@ -167,12 +167,6 @@
                     d3.select(".tooltip")
                         .style("opacity", 0);
                 })
-                .on("click", function(event, d) {
-                    //showBarChart(d.year);
-                    //window.location.href = `cloropleth.html?year=${d.year}`;
-                    const selectedMetric = d3.select("#metric-dropdown").property("value");
-                    window.location.href = `cloropleth.html?year=${d.year}&metric=${selectedMetric}`;
-                });
 
             // Draw annotation for the 2014 data point
             const annotationData = pivotData.find(d => d.year === 2014);
