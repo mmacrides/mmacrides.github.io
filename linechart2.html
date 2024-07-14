@@ -32,10 +32,6 @@
         const state = urlParams.get('state');
         document.getElementById("state-name").textContent = state;
         d3.csv("personal_income_formatted.csv").then(data => {
-        // Extract state parameter from URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const state = urlParams.get('state');
-        document.getElementById("state-name").textContent = state;
 
         // Filter data by state
         const stateData = data.filter(d => d.State === state);
