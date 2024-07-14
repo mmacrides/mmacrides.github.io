@@ -172,7 +172,7 @@
 
                 annotation.append("text")
                     .attr("x", x(annotationData.year) + 65) // Adjusted based on text box position
-                    .attr("y", y(annotationData.value) - 70) // Adjusted based on text box position
+                    .attr("y", y(annotationData.value) - 80) // Adjusted based on text box position
                     .attr("fill", "purple")
                     .style("font-size", "12px")
                     .text("Hover over the data points to see the exact values")
@@ -190,7 +190,7 @@
                     .attr("x1", x(annotationData2021.year))
                     .attr("y1", y(annotationData2021.value))
                     .attr("x2", x(annotationData2021.year) - 50) // Directly left of the data point
-                    .attr("y2", y(annotationData2021.value)) // Same y-coordinate as the data point
+                    .attr("y2", y(annotationData2021.value) - 20) // Same y-coordinate as the data point
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
