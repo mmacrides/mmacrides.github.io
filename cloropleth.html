@@ -3,8 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Choropleth</title>
+    <title>Choropleth Map</title>
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 28px;
+            padding: 4px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 0px;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body>
     <div id="container">
@@ -12,56 +26,51 @@
         <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div id="chart"></div>
             <div id="legend"></div>
-            <p id="intro-text" class="box">fdvfvrgvrg</p>
+            <p id="intro-text" class="box">Choropleth map showing Eq. 90/10 ratio.</p>
             <button id="back-button">Back</button>
         </div>
     </div>
+    <div class="tooltip" style="opacity: 0;"></div>
+    
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <script src="https://d3js.org/topojson.v2.min.js"></script>
     <script>
         document.getElementById("back-button").addEventListener("click", function() {
             window.location.href = "linechart.html";
         });
-    
-        // Extract the year from the URL query parameters
+
         const urlParams = new URLSearchParams(window.location.search);
         const year = urlParams.get('year');
-        
-        // Set the year title in the header
         document.getElementById("year-title").textContent = year;
-    
-        // Load data and render the choropleth chart based on the year
+
         d3.csv("personal_income_formatted.csv").then(data => {
             const metric = "Eq. 90/10 ratio";
             const metricData = data.filter(d => d.Metric === metric);
-    
-            const yearData = metricData.map(d => {
-                return {
-                    state: d["State"],
-                    value: +d[year]
-                };
-            });
-    
-            const stateData = new Map();
-            yearData.forEach(d => stateData.set(d.state, d.value));
-    
+
+            const yearData = metricData.map(d => ({
+                state: d["State"],
+                value: +d[year]
+            }));
+
+            const stateData = new Map(yearData.map(d => [d.state, d.value]));
+
             const margin = {top: 20, right: 30, bottom: 50, left: 60};
-            const width = 960 - margin.left - margin.right;
-            const height = 600 - margin.top - margin.bottom;
-    
+            const width = 500 - margin.left - margin.right;
+            const height = 400 - margin.top - margin.bottom;
+
             const svg = d3.select("#chart")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
-    
+
             const color = d3.scaleQuantize()
                 .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                 .range(d3.schemeBlues[9]);
-    
+
             const tooltip = d3.select(".tooltip");
-    
+
             d3.json("https://d3js.org/us-10m.v1.json").then(us => {
                 svg.append("g")
                     .selectAll("path")
@@ -72,37 +81,31 @@
                     .on("mouseover", function(event, d) {
                         const stateName = d.properties.name;
                         const stateValue = stateData.get(d.id) || 0;
-                        tooltip.transition()
-                            .duration(200)
-                            .style("opacity", .9);
-                        tooltip.html(`${stateName}: ${stateValue}`)
-                            .style("left", (event.pageX + 5) + "px")
-                            .style("top", (event.pageY - 28) + "px");
+                        tooltip.transition().duration(200).style("opacity", .9);
+                        tooltip.html(`${stateName}: ${stateValue}`).style("left", (event.pageX + 5) + "px").style("top", (event.pageY - 28) + "px");
                     })
                     .on("mouseout", function() {
-                        tooltip.transition()
-                            .duration(500)
-                            .style("opacity", 0);
+                        tooltip.transition().duration(500).style("opacity", 0);
                     })
                     .append("title")
                     .text(d => `${d.properties.name}: ${stateData.get(d.id) || 0}`);
-    
+
                 const legend = d3.select("#legend")
                     .append("svg")
                     .attr("width", 400)
                     .attr("height", 50)
                     .attr("class", "legend");
-    
+
                 const legendScale = d3.scaleLinear()
                     .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
                     .range([0, 300]);
-    
+
                 const legendAxis = d3.axisBottom(legendScale)
                     .ticks(9)
                     .tickFormat(d3.format(".2f"));
-    
+
                 const legendData = d3.range(9).map(i => d3.quantile(color.domain(), i / 8));
-    
+
                 legend.selectAll("rect")
                     .data(legendData)
                     .enter().append("rect")
@@ -111,12 +114,12 @@
                     .attr("width", 30)
                     .attr("height", 20)
                     .attr("fill", d => color(d));
-    
+
                 legend.append("g")
                     .attr("transform", "translate(0,20)")
                     .call(legendAxis);
             });
         });
-    </script>    
+    </script>
 </body>
 </html>
