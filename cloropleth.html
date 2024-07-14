@@ -207,9 +207,7 @@
                     .on("click", function(event, d) {
                         const stateName = stateNames[d.id];
                         window.location.href = `linechart2.html?state=${stateName}`;
-                    })
-                    .append("title")
-                    .text(d => `${stateNames[d.id]}: ${stateDataMapped.get(d.id) || 0}`);
+                    });
 
                 const legend = d3.select("#legend")
                     .append("svg")
