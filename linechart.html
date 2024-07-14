@@ -150,8 +150,9 @@
                 })
                 .on("click", function(event, d) {
                     //showBarChart(d.year);
-                    window.location.href = `cloropleth.html?year=${d.year}`;
-
+                    //window.location.href = `cloropleth.html?year=${d.year}`;
+                    const selectedMetric = d3.select("#metric-dropdown").property("value");
+                    window.location.href = `cloropleth.html?year=${d.year}&metric=${selectedMetric}`;
                 });
 
             // Draw annotation for the 2014 data point
