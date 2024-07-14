@@ -8,7 +8,7 @@
 </head>
 <body>
     <div id="container">
-        <h1 id="header-text">Chloropleth Map</h1>
+        <h1 id="header-text">Choropleth Map - <span id="year-title"></span></h1>
         <div id="chart-container" style="display: flex;">
             <div id="chart"></div>
             <div id="legend"></div>
@@ -26,6 +26,9 @@
         // Extract the year from the URL query parameters
         const urlParams = new URLSearchParams(window.location.search);
         const year = urlParams.get('year');
+        
+        // Set the year title in the header
+        document.getElementById("year-title").textContent = year;
     
         // Load data and render the choropleth chart based on the year
         d3.csv("personal_income_formatted.csv").then(data => {
@@ -127,4 +130,3 @@
     </script>    
 </body>
 </html>
-
