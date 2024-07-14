@@ -31,31 +31,44 @@
         const urlParams = new URLSearchParams(window.location.search);
         const state = urlParams.get('state');
         document.getElementById("state-name").textContent = state;
-        // Fetch and display data for the selected state
         d3.csv("personal_income_formatted.csv").then(data => {
-            // Filter out blank metrics and remove specific metrics
-            const metrics = [...new Set(data.map(d => d.Metric).filter(d => d))];
-            const stateData = data.filter(d => d.State === state);
-            const filteredMetrics = metrics.filter(metric => !(metric.includes("Median") || metric.includes("Mean") || metric.includes("Top 10% share") || metric.includes("Bottom 10% share")));
+        // Extract state parameter from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const state = urlParams.get('state');
+        document.getElementById("state-name").textContent = state;
 
-            // Populate dropdown
-            const dropdown = d3.select("#metric-dropdown");
-            dropdown.selectAll("option")
-                .data(filteredMetrics)
-                .enter()
-                .append("option")
-                .attr("value", d => d)
-                .text(d => d);
+        // Filter data by state
+        const stateData = data.filter(d => d.State === state);
 
-            // Event listener for dropdown change
-            dropdown.on("change", function() {
-                const selectedMetric = this.value;
-                updateChart(data, selectedMetric);
-            });
+        // Filter out blank metrics and remove specific metrics
+        const metrics = [...new Set(stateData.map(d => d.Metric).filter(d => d))];
+        const filteredMetrics = metrics.filter(metric => 
+            !(
+                metric.includes("Median") || 
+                metric.includes("Mean") || 
+                metric.includes("Top 10% share") || 
+                metric.includes("Bottom 10% share")
+            )
+        );
 
-            // Initial chart rendering
-            updateChart(data, filteredMetrics[0]);
+        // Populate dropdown
+        const dropdown = d3.select("#metric-dropdown");
+        dropdown.selectAll("option")
+            .data(filteredMetrics)
+            .enter()
+            .append("option")
+            .attr("value", d => d)
+            .text(d => d);
+
+        // Event listener for dropdown change
+        dropdown.on("change", function() {
+            const selectedMetric = this.value;
+            updateChart(stateData, selectedMetric); // Pass stateData to updateChart
         });
+
+        // Initial chart rendering
+        updateChart(stateData, filteredMetrics[0]); // Pass stateData to updateChart
+    });
 
         function updateChart(data, metric) {
             // Clear the current SVG
