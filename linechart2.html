@@ -137,26 +137,35 @@
                 .style("font-size", "14px") // Increased font size
                 .text(metric);
 
-            // Draw line
+            // Draw line with transition
             const line = d3.line()
                 .x(d => x(d.year))
                 .y(d => y(d.value));
 
-            svg.append("path")
+            const path = svg.append("path")
                 .datum(pivotData)
                 .attr("fill", "none")
                 .attr("stroke", "#007bff")
                 .attr("stroke-width", 2)
                 .attr("d", line);
 
-            // Draw dots
-            // Draw dots
+            // Transition for the line path
+            const totalLength = path.node().getTotalLength();
+
+            path.attr("stroke-dasharray", totalLength + " " + totalLength)
+                .attr("stroke-dashoffset", totalLength)
+                .transition()
+                .duration(1200)  // Duration of the transition in milliseconds
+                .ease(d3.easeLinear)
+                .attr("stroke-dashoffset", 0);
+
+            // Draw dots with transition
             svg.selectAll("dot")
                 .data(pivotData)
                 .enter().append("circle")
                 .attr("cx", d => x(d.year))
                 .attr("cy", d => y(d.value))
-                .attr("r", 4)
+                .attr("r", 0)  // Start with radius 0
                 .attr("fill", "#007bff")
                 .on("mouseover", function(event, d) {
                     d3.select(".tooltip")
@@ -169,6 +178,14 @@
                     d3.select(".tooltip")
                         .style("opacity", 0);
                 })
+                .on("click", function(event, d) {
+                    const selectedMetric = d3.select("#metric-dropdown").property("value");
+                    window.location.href = `choropleth.html?year=${d.year}&metric=${selectedMetric}`;
+                })
+                .transition()
+                .duration(1200)  // Duration of the transition in milliseconds
+                .ease(d3.easeBounce)  // You can choose different easing functions
+                .attr("r", 4);  // Final radius
 
             // Draw annotation for the 2014 data point
             const annotationData = pivotData.find(d => d.year === 2014);
