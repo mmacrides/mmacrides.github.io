@@ -179,14 +179,14 @@
                     .attr("x1", x(annotationData.year))
                     .attr("y1", y(annotationData.value))
                     .attr("x2", x(annotationData.year)) // Keep x constant
-                    .attr("y2", y(annotationData.value) + 30) // Move line directly down
+                    .attr("y2", y(annotationData.value) + 50) // Move line directly down
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
 
                 annotation.append("text")
                     .attr("x", x(annotationData.year) - 20) // Slightly offset for better visibility
-                    .attr("y", y(annotationData.value) + 60) // Position text directly below the line
+                    .attr("y", y(annotationData.value) + 65) // Position text directly below the line
                     .attr("fill", "purple")
                     .style("font-size", "12px")
                     .text("Hover over the data points to see the exact values")
