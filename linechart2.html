@@ -11,11 +11,11 @@
 </head>
 <body>
     <div id="container">
-        <h1 id="header-text">Line Chart for <span id="state-name"></span></h1>
+        <h1 id="header-text">Income Distribution for <span id="state-name"></span> over the Years</h1>
         <select id="metric-dropdown"></select>
         <div id="chart-container" style="display: flex;">
             <div id="chart"> </div>
-            <p id="intro-text" class="box">Test</p>
+            <p id="intro-text" class="box">This scene shows the distribution of income metrics in <span id="state-name-text"></span> over time.</p>
             <button id="back-button">Back</button>
         </div>
     </div>
@@ -32,6 +32,7 @@
         const urlParams = new URLSearchParams(window.location.search);
         const state = urlParams.get('state');
         document.getElementById("state-name").textContent = state;
+        document.getElementById("state-name-text").textContent = state;
         d3.csv("personal_income_formatted.csv").then(data => {
 
         // Filter data by state
