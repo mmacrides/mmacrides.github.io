@@ -179,43 +179,18 @@
                     .attr("x1", x(annotationData.year))
                     .attr("y1", y(annotationData.value))
                     .attr("x2", x(annotationData.year) + 55) // Adjusted based on text box position
-                    .attr("y2", y(annotationData.value) - 60) // Adjusted based on text box position
+                    .attr("y2", y(annotationData.value) + 30) // Move line below the data point
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
 
                 annotation.append("text")
                     .attr("x", x(annotationData.year) + 60) // Adjusted based on text box position
-                    .attr("y", y(annotationData.value) - 80) // Adjusted based on text box position
+                    .attr("y", y(annotationData.value) + 50) // Move text below the data point
                     .attr("fill", "purple")
                     .style("font-size", "12px")
                     .text("Hover over the data points to see the exact values")
                     .call(wrap, 75); // Increased width for text wrapping
-            }
-
-            // Draw annotation for the 2021 data point
-            const annotationData2021 = pivotData.find(d => d.year === 2021);
-
-            if (annotationData2021) {
-                const annotation2021 = svg.append("g")
-                    .attr("class", "annotation-group");
-
-                annotation2021.append("line")
-                    .attr("x1", x(annotationData2021.year))
-                    .attr("y1", y(annotationData2021.value))
-                    .attr("x2", x(annotationData2021.year) - 50) // Directly left of the data point
-                    .attr("y2", y(annotationData2021.value) + 25) // Same y-coordinate as the data point
-                    .attr("stroke", "purple")
-                    .attr("stroke-width", 1)
-                    .attr("stroke-dasharray", "4");
-
-                annotation2021.append("text")
-                    .attr("x", x(annotationData2021.year) - 120) // Positioning to the left of the line
-                    .attr("y", y(annotationData2021.value) + 15) // Slightly above the line
-                    .attr("fill", "purple")
-                    .style("font-size", "12px")
-                    .text("Click on a data point to see detailed metrics")
-                    .call(wrap, 75); // Adjust the wrapping width if necessary
             }
 
             // Tooltip for displaying data values on hover
