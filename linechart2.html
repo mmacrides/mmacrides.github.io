@@ -178,20 +178,21 @@
                 annotation.append("line")
                     .attr("x1", x(annotationData.year))
                     .attr("y1", y(annotationData.value))
-                    .attr("x2", x(annotationData.year) + 55) // Adjusted based on text box position
-                    .attr("y2", y(annotationData.value) + 30) // Move line below the data point
+                    .attr("x2", x(annotationData.year)) // Keep x constant
+                    .attr("y2", y(annotationData.value) + 30) // Move line directly down
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
 
                 annotation.append("text")
-                    .attr("x", x(annotationData.year) + 60) // Adjusted based on text box position
-                    .attr("y", y(annotationData.value) + 50) // Move text below the data point
+                    .attr("x", x(annotationData.year) + 10) // Slightly offset for better visibility
+                    .attr("y", y(annotationData.value) + 50) // Position text directly below the line
                     .attr("fill", "purple")
                     .style("font-size", "12px")
                     .text("Hover over the data points to see the exact values")
                     .call(wrap, 75); // Increased width for text wrapping
             }
+
 
             // Tooltip for displaying data values on hover
             d3.select("body").append("div")
