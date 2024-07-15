@@ -134,7 +134,7 @@
             path.attr("stroke-dasharray", totalLength + " " + totalLength)
                 .attr("stroke-dashoffset", totalLength)
                 .transition()
-                .duration(600)  // Duration of the transition in milliseconds
+                .duration(1000)  // Duration of the transition in milliseconds
                 .ease(d3.easeLinear)
                 .attr("stroke-dashoffset", 0);
 
@@ -162,7 +162,7 @@
                     window.location.href = `choropleth.html?year=${d.year}&metric=${selectedMetric}`;
                 })
                 .transition()
-                .duration(600)  // Duration of the transition in milliseconds
+                .duration(1000)  // Duration of the transition in milliseconds
                 .ease(d3.easeBounce)  // You can choose different easing functions
                 .attr("r", 4);  // Final radius
 
