@@ -26,7 +26,7 @@ h1 {
 }
 
 h2 {
-    color: #667;
+    color: #007bff;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -73,10 +73,6 @@ p.box {
     background-color: #f5f5f5;
 }
 
-#header-text2 {
-    color: #007bff;
-}
-
 button, select {
     padding: 10px 20px;
     font-size: 16px;
@@ -105,12 +101,6 @@ a:hover {
 button {
     display: block;
     margin: 10px auto;
-}
-
-h2 {
-    color: #007bff;
-    text-align: center;
-    margin-bottom: 20px;
 }
 
 .tooltip {
