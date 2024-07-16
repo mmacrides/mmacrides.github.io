@@ -196,8 +196,7 @@
                     .data(topojson.feature(us, us.objects.states).features)
                     .enter().append("path")
                     .attr("fill", d => color(stateDataMapped.get(d.id) || 0))
-                    //.attr("d", d3.geoPath())
-                    .attr("d", path) // Use the new path variable here
+                    .attr("d", path)
                     .attr("d", d3.geoPath())
                     .on("mouseover", function(event, d) {
                         const stateName = stateNames[d.id]; 
@@ -210,17 +209,18 @@
                     .on("mouseout", function() {
                         tooltip.transition().duration(500).style("opacity", 0);
                     })
-                    //.on("click", function(event, d) {
-                    //    const stateName = stateNames[d.id];
-                    //    window.location.href = `linechart2.html?state=${stateName}`;
-                    //});
                     .on("click", function(event, d) {
                         const stateName = stateNames[d.id];
                         const urlParams = new URLSearchParams(window.location.search);
                         const metric = urlParams.get('metric');
                         const year = urlParams.get('year');
                         window.location.href = `linechart2.html?state=${stateName}&metric=${metric}&year=${year}`;
-                    });
+                    })
+                    .transition()  // Add transition
+                    .duration(1000)  // Duration of the transition in milliseconds
+                    .attr("fill", d => color(stateDataMapped.get(d.id) || 0));
+            });
+
 
 
                 const legend = d3.select("#legend")
