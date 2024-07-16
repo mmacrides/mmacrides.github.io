@@ -5,9 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Line Chart</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        /* Add your CSS styles here */
-    </style>
 </head>
 <body>
     <div id="container">
@@ -61,15 +58,14 @@
         // Event listener for dropdown change
         dropdown.on("change", function() {
             const selectedMetric = this.value;
-            updateChart(stateData, selectedMetric); // Pass stateData to updateChart
+            updateChart(stateData, selectedMetric);
         });
 
-        // Initial chart rendering
-        updateChart(stateData, filteredMetrics[0]); // Pass stateData to updateChart
+        updateChart(stateData, filteredMetrics[0]);
     });
 
         function updateChart(data, metric) {
-            // Clear the current SVG
+            // Clear current SVG
             d3.select("#chart").html("");
 
             // Filter data by selected metric
@@ -81,15 +77,14 @@
                 return;
             }
 
-            // Pivot data (years are in columns D-N, which are 2012-2022)
-            const years = d3.range(2012, 2023); // Generates [2012, 2013, ..., 2022]
+            // Pivot year data from columns to rows
+            const years = d3.range(2012, 2023);
             const pivotData = years.map(year => ({
                 year: year,
                 value: +filteredData[0][year]
             }));
 
-            // Set up dimensions and margins
-            const margin = {top: 20, right: 30, bottom: 50, left: 60}; // Increased bottom and left margins for labels
+            const margin = {top: 20, right: 30, bottom: 50, left: 60};
             const width = 800 - margin.left - margin.right;
             const height = 400 - margin.top - margin.bottom;
 
@@ -109,9 +104,9 @@
             // Add padding to the Y-axis domain
             const yMin = d3.min(pivotData, d => d.value);
             const yMax = d3.max(pivotData, d => d.value);
-            const yPadding = (yMax - yMin) * 0.35; // 35% padding
+            const yPadding = (yMax - yMin) * 0.35;
             const y = d3.scaleLinear()
-                .domain([yMin - yPadding, yMax + yPadding]) // Adjusted to add padding
+                .domain([yMin - yPadding, yMax + yPadding])
                 .range([height, 0]);
 
             // Add axes
@@ -120,10 +115,10 @@
                 .call(d3.axisBottom(x).tickFormat(d3.format("d")))
                 .append("text")
                 .attr("x", width / 2)
-                .attr("y", 40) // Positioning below the axis
+                .attr("y", 40)
                 .attr("fill", "black")
                 .style("text-anchor", "middle")
-                .style("font-size", "14px") // Increased font size
+                .style("font-size", "14px")
                 .text("Year");
 
             svg.append("g")
@@ -131,10 +126,10 @@
                 .append("text")
                 .attr("transform", "rotate(-90)")
                 .attr("x", -height / 2)
-                .attr("y", -50) // Positioning to the left of the axis
+                .attr("y", -50)
                 .attr("fill", "black")
                 .style("text-anchor", "middle")
-                .style("font-size", "14px") // Increased font size
+                .style("font-size", "14px")
                 .text(metric);
 
             // Draw line with transition
@@ -155,7 +150,7 @@
             path.attr("stroke-dasharray", totalLength + " " + totalLength)
                 .attr("stroke-dashoffset", totalLength)
                 .transition()
-                .duration(1200)  // Duration of the transition in milliseconds
+                .duration(1200)
                 .ease(d3.easeLinear)
                 .attr("stroke-dashoffset", 0);
 
@@ -165,7 +160,7 @@
                 .enter().append("circle")
                 .attr("cx", d => x(d.year))
                 .attr("cy", d => y(d.value))
-                .attr("r", 0)  // Start with radius 0
+                .attr("r", 0) 
                 .attr("fill", "#007bff")
                 .on("mouseover", function(event, d) {
                     d3.select(".tooltip")
@@ -183,9 +178,9 @@
                     window.location.href = `choropleth.html?year=${d.year}&metric=${selectedMetric}`;
                 })
                 .transition()
-                .duration(1200)  // Duration of the transition in milliseconds
-                .ease(d3.easeBounce)  // You can choose different easing functions
-                .attr("r", 4);  // Final radius
+                .duration(1200)
+                .ease(d3.easeBounce)
+                .attr("r", 4);
 
             // Draw annotation for the 2014 data point
             const annotationData = pivotData.find(d => d.year === 2014);
@@ -197,23 +192,23 @@
                 annotation.append("line")
                     .attr("x1", x(annotationData.year))
                     .attr("y1", y(annotationData.value))
-                    .attr("x2", x(annotationData.year)) // Keep x constant
-                    .attr("y2", y(annotationData.value) + 50) // Move line directly down
+                    .attr("x2", x(annotationData.year))
+                    .attr("y2", y(annotationData.value) + 50)
                     .attr("stroke", "purple")
                     .attr("stroke-width", 1)
                     .attr("stroke-dasharray", "4");
 
                 annotation.append("text")
-                    .attr("x", x(annotationData.year) - 20) // Slightly offset for better visibility
-                    .attr("y", y(annotationData.value) + 65) // Position text directly below the line
+                    .attr("x", x(annotationData.year) - 20)
+                    .attr("y", y(annotationData.value) + 65)
                     .attr("fill", "purple")
                     .style("font-size", "12px")
                     .text("Hover over the data points to see the exact values")
-                    .call(wrap, 75); // Increased width for text wrapping
+                    .call(wrap, 75);
             }
 
 
-            // Tooltip for displaying data values on hover
+            // Tooltip for hover
             d3.select("body").append("div")
                 .attr("class", "tooltip")
                 .style("opacity", 0);
@@ -226,7 +221,7 @@
                     let word;
                     let line = [];
                     let lineNumber = 0;
-                    const lineHeight = 1.1; // ems
+                    const lineHeight = 1.1;
                     const x = text.attr("x");
                     const y = text.attr("y");
                     const dy = parseFloat(text.attr("dy") || 0);
