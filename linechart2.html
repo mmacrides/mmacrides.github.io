@@ -53,7 +53,8 @@
             .enter()
             .append("option")
             .attr("value", d => d)
-            .text(d => d);
+            .text(d => d)
+            .property("selected", d => d === initialMetric);
 
         // Event listener for dropdown change
         dropdown.on("change", function() {
@@ -61,7 +62,7 @@
             updateChart(stateData, selectedMetric);
         });
 
-        updateChart(stateData, filteredMetrics[0]);
+        updateChart(stateData, initialMetric || filteredMetrics[0]);
     });
 
         function updateChart(data, metric) {
