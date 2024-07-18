@@ -21,7 +21,7 @@
     </style>
 </head>
 <body>
-    <div id="container">
+    <div id="container-ch">
         <h1 id="header-text"><span id="metric-title"></span> across the States - <span id="year-title"></span></h1>
         <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div id="chart-ch"></div>
@@ -67,17 +67,6 @@
                 .attr("height", height + margin.top + margin.bottom)
                 .append("g")
                 .attr("transform", `translate(${margin.left},${margin.top})`);
-            
-            const zoom = d3.zoom()
-                .scaleExtent([1, 8])
-                .on("zoom", zoomed);
-
-            function zoomed(event) {
-                svg.selectAll("path")
-                    .attr("transform", event.transform);
-            }
-
-            svg.call(zoom);
 
             const color = d3.scaleQuantize()
                 .domain([d3.min(yearData, d => d.value), d3.max(yearData, d => d.value)])
