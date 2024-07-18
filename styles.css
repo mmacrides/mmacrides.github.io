@@ -44,6 +44,7 @@ p.box {
     display: none;
     flex-direction: column;
     align-items: center;
+    padding-top: 20px; /* Add padding to the top of the container */
 }
 
 #chart {
