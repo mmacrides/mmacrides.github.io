@@ -23,12 +23,12 @@
 <body>
     <div id="container">
         <h1 id="header-text"><span id="metric-title"></span> across the States - <span id="year-title"></span></h1>
-        <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-            <div id="chart"></div>
-            <div id="legend"></div>
-            <p id="intro-text" class="box"> This scene displays a state chart using the metric: <span id="metric-text"></span> and year: <span id="year-text"></span>. If you'd like to drill down further, click on a state. If you'd like to drill down using other parameters, return to the prior chart and start again.</p>
-            <button id="back-button">Back</button>
-        </div>
+    </div>
+    <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
+        <div id="chart"></div>
+        <div id="legend"></div>
+        <p id="intro-text" class="box"> This scene displays a state chart using the metric: <span id="metric-text"></span> and year: <span id="year-text"></span>. If you'd like to drill down further, click on a state. If you'd like to drill down using other parameters, return to the prior chart and start again.</p>
+        <button id="back-button">Back</button>
     </div>
     <div class="tooltip" style="opacity: 0;"></div>
     
@@ -184,7 +184,7 @@
 
             const stateDataMapped = new Map(yearData.map(d => [stateCodes[d.state], d.value]));
             const projection = d3.geoAlbersUsa()
-                .scale(0)
+                .scale(1000)
                 .translate([width / 2, height / 2]);
             const path = d3.geoPath().projection(projection);
 
