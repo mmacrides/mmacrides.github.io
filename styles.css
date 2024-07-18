@@ -51,6 +51,11 @@ p.box {
     height: 400px;
 }
 
+#chart-ch {
+    width: 200%;
+    height: 400px;
+}
+
 #metric-dropdown {
     margin: 10px 0;
 }

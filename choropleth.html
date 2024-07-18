@@ -22,9 +22,9 @@
 </head>
 <body>
     <div id="container">
-        <h1 id="header-text"><span id="metric-title"></span> across the State#s - <span id="year-title"></span></h1>
+        <h1 id="header-text"><span id="metric-title"></span> across the States - <span id="year-title"></span></h1>
         <div id="chart-container" style="display: flex; justify-content: center; align-items: center; gap: 20px;">
-            <div id="chart"></div>
+            <div id="chart-ch"></div>
             <div id="legend"></div>
             <p id="intro-text" class="box"> This scene displays a state chart using the metric: <span id="metric-text"></span> and year: <span id="year-text"></span>. If you'd like to drill down further, click on a state. If you'd like to drill down using other parameters, return to the prior chart and start again.</p>
             <button id="back-button">Back</button>
@@ -61,7 +61,7 @@
             const width = 500 - margin.left - margin.right; 
             const height = 400 - margin.top - margin.bottom; 
 
-            const svg = d3.select("#chart")
+            const svg = d3.select("#chart-ch")
                 .append("svg")
                 .attr("width", width + margin.left + margin.right)
                 .attr("height", height + margin.top + margin.bottom)
