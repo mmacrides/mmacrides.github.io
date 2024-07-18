@@ -184,7 +184,7 @@
 
             const stateDataMapped = new Map(yearData.map(d => [stateCodes[d.state], d.value]));
             const projection = d3.geoAlbersUsa()
-                .scale(2000) // Adjusted scale
+                .scale(5000) // Adjusted scale
                 .translate([width / 2 + 100, height / 2 + 50]); // Adjusted translation
                 //.scale(1000)
                 //.translate([width / 2, height / 2]);
