@@ -54,7 +54,7 @@ p.box {
 #chart-ch {
     width: 100%;
     height: 400px;
-    display: flex;
+    /*display: flex;*/
     justify-content: center;
 }
 
