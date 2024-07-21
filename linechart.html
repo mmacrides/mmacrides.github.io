@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Data Visualization - Linechart 1</title>
+    <title>Drill Down Data Visualization - Linechart 1</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://d3js.org/d3.v6.min.js"></script>
 </head>
@@ -13,7 +13,7 @@
         <select id="metric-dropdown"></select>
         <div id="chart-container" style="display: flex;">
             <div id="chart"></div>
-            <p id="intro-text" class="box">This scene presents income distribution metrics in the United States over time. The "Eq. X/Y ratio" compares the income of individuals at the Xth percentile to the income of individuals at the Yth percentile. The larger the X or Y value, the more affluent. Additionally, the larger the final value, the more income disparity between groups. The Gini Coefficient is another measure of income inequality. A score of 0 means perfect equality, and a score of 1 means perfect inequality.</p>
+            <p id="intro-text" class="box">This scene presents income distribution metrics in the United States over time. The "Eq. X/Y ratio" compares the income of individuals at the Xth percentile to the income of individuals at the Yth percentile. The larger the X or Y value, the more affluent. Additionally, the larger the final value, the more income disparity between groups. The Gini Coefficient is another measure of income inequality. A score of 0 means perfect equality, and a score of 1 means perfect inequality. Selecting a data point will bring up a choropleth related to the metric and year selected.</p>
             <button id="back-button">Back</button>
         </div>
     </div>
